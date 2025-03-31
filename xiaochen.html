@@ -1,0 +1,929 @@
+<!-- Powered by Sxl.cn 4 (1) Mar 31, 2025 at 06:25-->
+<!DOCTYPE html>
+<html itemscope itemtype='http://schema.org/WebPage' lang='zh-CN' xmlns:og='http://ogp.me/ns#' xmlns='http://www.w3.org/1999/xhtml'>
+<head>
+<title>死机工作室</title>
+<!-- removing_gon has activated 100%, so we add not_removing_gon rollout for specific user -->
+<script src='/dollars/v1/sites/crashstudio/pages/88bf8fa0-779b-4b60-b916-8016e4ce4239/show.js' type='text/javascript'></script>
+<script>
+  function setCookieItem(key, value, options) {
+    if (typeof options.expires === 'number') {
+      var days = options.expires, t = options.expires = new Date();
+      t.setTime(+t + days * 864e+5);
+    }
+    return (document.cookie = [
+      encodeURIComponent(key), '=', encodeURIComponent(String(value)),
+      options.expires ? '; expires=' + options.expires.toUTCString() : '', // use expires attribute, max-age is not supported by IE
+      options.path    ? '; path=' + options.path : '',
+      options.domain  ? '; domain=' + options.domain : '',
+      options.secure  ? '; secure' : ''
+    ].join(''));
+  }
+  function getCookieItem(cookieName) {
+    const name = cookieName + "=";
+    const decodedCookie = decodeURIComponent(document.cookie);
+    const cookieArray = decodedCookie.split(';');
+    for (let i = 0; i < cookieArray.length; i++) {
+      let cookie = cookieArray[i].trim();
+      if (cookie.indexOf(name) === 0) {
+        return cookie.substring(name.length, cookie.length);
+      }
+    }
+    return null;
+  }
+  function getQueryParam(url, param) {
+    // Expects a raw URL
+    var newParam = param.replace(/[[]/, '\\[').replace(/[\]]/, '\\]');
+    var regexS = '[\\?&]' + newParam + '=([^&#]*)';
+    var regex = new RegExp(regexS);
+    var results = regex.exec(url);
+    if (results === null || results && typeof results[1] !== 'string' && results[1].length) {
+      return '';
+    } else {
+      var result = results[1];
+      try {
+        result = decodeURIComponent(result);
+      } catch (err) {
+        console.error('Skipping decoding for malformed query param: ' + result);
+      }
+      return result.replace(/\+/g, ' ');
+    }
+  }
+  function utmNamesMapping(utmName) {
+    var expandedUtmName = '';
+    switch (utmName) {
+      case 'gclid':
+      case 'utm_gclid_current':
+        expandedUtmName = 'utm_gclid';
+        break;
+      default:
+        expandedUtmName = utmName;
+    }
+    return expandedUtmName;
+  }
+  function getTrackDomain() {
+    var trackDomain = '';
+    var hostName = document.domain;
+    var host = $S && $S.global_conf && $S.global_conf.host_suffix ||
+      $S && $S.globalConf && $S.globalConf.host_suffix || '';
+  
+    if (hostName && hostName.includes('.strikingly.com')) {
+      trackDomain = '.strikingly.com';
+    } else if (hostName && hostName.includes('.sxl.cn')) {
+      trackDomain = '.sxl.cn';
+    } else if ($S && $S.live_site || $S && $S.liveBlog) {
+      trackDomain = hostName;
+    } else if (host) {
+      trackDomain = "." + host;
+    } else {
+      trackDomain = location.href && location.href.includes('strikingly') ? '.strikingly.com' : '.sxl.cn';
+    }
+    return trackDomain;
+  }
+  function recordUniqUtmCookies(originUrl, needSetCookie = true) {
+    var campaign_keywords = 'utm_source gclid utm_medium utm_campaign utm_content utm_term'.split(' '),
+        kw = '',
+        uniq_utm_config = {};
+    var index;
+    var siteUrl = originUrl || document.URL;
+    for (index = 0; index < campaign_keywords.length; ++index) {
+      kw = getQueryParam(siteUrl, campaign_keywords[index]);
+      var utm_name = utmNamesMapping(campaign_keywords[index]);
+      if (kw.length !== 0) {
+        uniq_utm_config[utm_name] = kw;
+      }
+    }
+    var isUtmCookieExisted = document.cookie && document.cookie.includes('__uniq_utm_config=');
+    if (!isUtmCookieExisted) {
+      uniq_utm_config['utm_timestamp'] = new Date().getTime();
+      uniq_utm_config['utm_referrer'] = document.referrer;
+      var gclidValue = getQueryParam(siteUrl, 'gclid');
+      var gbraidValue = getQueryParam(siteUrl, 'gbraid');
+      var wbraidValue = getQueryParam(siteUrl, 'wbraid');
+      var ttclidValue = getQueryParam(siteUrl, 'ttclid');
+      var fbclidValue = getQueryParam(siteUrl, 'fbclid');
+      var msclkidValue = getQueryParam(siteUrl, 'msclkid');
+      var bdvidValue = getQueryParam(siteUrl, 'bd_vid');
+      if (gclidValue) {
+        uniq_utm_config['utm_gclid'] = gclidValue;
+      }
+      if (gbraidValue) {
+        uniq_utm_config['utm_gbraid'] = gbraidValue;
+      }
+      if (wbraidValue) {
+        uniq_utm_config['utm_wbraid'] = wbraidValue;
+      }
+      if (ttclidValue) {
+        uniq_utm_config['utm_ttclid'] = ttclidValue;
+      }
+      if (fbclidValue) {
+        uniq_utm_config['utm_fbclid'] = fbclidValue;
+      }
+      if (msclkidValue) {
+        uniq_utm_config['utm_msclkid'] = msclkidValue;
+      }
+      if (bdvidValue) {
+        uniq_utm_config['utm_bdvid'] = bdvidValue;
+        uniq_utm_config['utm_bdlogidurl'] = siteUrl;
+      }
+      if (needSetCookie) {
+        var cookieDomain = getTrackDomain();
+        var cookieConfig = {
+          expires: 120,
+          path: '/',
+          domain: cookieDomain
+        }
+        if (window.$ && window.$.cookie) {
+          window.$.cookie('__uniq_utm_config', JSON.stringify(uniq_utm_config), cookieConfig);
+        } else {
+          setCookieItem('__uniq_utm_config', JSON.stringify(uniq_utm_config), cookieConfig);
+        }
+      } else {
+        var utmLoopId = setInterval(()=> {
+          if(document.body) {
+            var $inputs = document.getElementsByClassName('sign-up-utm-config-input')
+            var configStr = encodeURIComponent(JSON.stringify(uniq_utm_config))
+            for (var $item of $inputs ) {
+              $item.value = configStr
+            }
+            clearInterval(utmLoopId)
+          }
+        }, 500)
+      }
+    }
+  }
+  function recordBaiDuAnalyticsCookies() {
+    var siteUrl = document.URL;
+    var baiduVid = getQueryParam(siteUrl, 'bd_vid');
+    if (baiduVid) {
+      var analyticsDomain = getTrackDomain();
+      setCookieItem('__bd_analytics_config', JSON.stringify({
+        bd_vid: baiduVid,
+        logid_url: siteUrl
+      }), {
+        expires: 120,
+        path: '/',
+        domain: analyticsDomain
+      });
+    }
+  }
+  function recordFacebookAnalyticsCookies() {
+    var siteUrl = document.URL;
+    var fbclid = getQueryParam(siteUrl, 'fbclid');
+    if (fbclid) {
+      var trackDomain = getTrackDomain();
+      setCookieItem('__fe_fbclid', fbclid, {
+        expires: 90,
+        path: '/',
+        domain: trackDomain
+      });
+    }
+  }
+  
+  const isEuVisitor = getCookieItem('__strk_cookie_eu_visitor') === 'true'
+  const isOpenStrkAnalyticsCookie = getCookieItem('__is_open_strk_analytics_cookie')
+  let cookieNotificationArea = undefined
+  let isShowCookieNotification = undefined
+  if($S && $S.stores && $S.stores.pageData) {
+    cookieNotificationArea = $S.stores.pageData.cookieNotificationArea
+    isShowCookieNotification = $S.stores.pageData.showCookieNotification
+    if(!isShowCookieNotification && $S.blogPostData && $S.blogPostData.pageData) {
+      isShowCookieNotification = $S.blogPostData.pageData.showCookieNotification
+    }
+  }
+  const isLiveSite = Boolean($S && $S.live_site)
+  
+  function handleRecordUniqUtmCookies() {
+    try {
+      if(isLiveSite) {
+        if(isShowCookieNotification) {
+          if(cookieNotificationArea === 'eu') {
+            if(isEuVisitor) {
+              return;
+            } else {
+              recordUniqUtmCookies();
+            }
+          } else {
+            return;
+          }
+        } else {
+          recordUniqUtmCookies();
+          return;
+        }
+      } else {
+        if (isEuVisitor && !getCookieItem('__is_open_strk_analytics_cookie')) {
+          recordUniqUtmCookies(null, false);
+          return;
+        } else if (!isEuVisitor) {
+          recordUniqUtmCookies();
+        }
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  }
+  
+  // record unique utm cookies
+  handleRecordUniqUtmCookies();
+  
+  // record Bai Du analytics cookies for sxl
+  try {
+    if(isLiveSite) {
+      if(isShowCookieNotification) {
+        if(cookieNotificationArea === 'eu') {
+          if(!isEuVisitor) {
+            recordBaiDuAnalyticsCookies();
+          }
+        }
+      } else {
+        recordBaiDuAnalyticsCookies();
+      }
+    } else if (!isEuVisitor) {
+      recordBaiDuAnalyticsCookies();
+    }
+  } catch (error) {
+    console.error(error);
+  }
+  
+  function handleRecordFacebookAnalyticsCookies() {
+    try {
+      if(isLiveSite) {
+        if(isShowCookieNotification) {
+          if(cookieNotificationArea === 'eu') {
+            if(isEuVisitor) {
+              return;
+            } else {
+              recordFacebookAnalyticsCookies();
+            }
+          } else {
+            return;
+          }
+        } else {
+          recordFacebookAnalyticsCookies();
+          return;
+        }
+      } else if (!isEuVisitor) {
+        recordFacebookAnalyticsCookies();
+      }
+    } catch (error) {
+      console.error(error);
+    }
+  }
+  // record Fackbook analytics cookies
+  handleRecordFacebookAnalyticsCookies();
+</script>
+
+<meta content='text/html; charset=UTF-8' http-equiv='Content-Type'>
+<meta content='width=device-width,initial-scale=1.0,user-scalable=yes,minimum-scale=1.0,maximum-scale=3.0' id='viewport' name='viewport'>
+<meta content='#ffffff' name='theme-color'>
+<style>
+  html,body{margin:0;padding:0}h1,h2,h3,h4,h5,h6,p,blockquote,pre,a,abbr,acronym,address,cite,code,del,dfn,em,img,q,s,samp,small,strike,strong,sub,sup,tt,var,dd,dl,dt,li,ol,ul,fieldset,form,label,input,textarea,legend,button,table,caption,tbody,tfoot,thead,tr,th,td{margin:0;padding:0;border:0;font-weight:normal;font-style:normal;font-size:100%;line-height:1;font-family:inherit}table{border-collapse:collapse;border-spacing:0}ol,ul{list-style:none}q:before,q:after,blockquote:before,blockquote:after{content:""}html{font-size:100%;-webkit-text-size-adjust:100%;-ms-text-size-adjust:100%}a:focus{outline:thin dotted}article,aside,details,figcaption,figure,footer,header,hgroup,nav,section{display:block}audio,canvas,video{display:inline-block}audio:not([controls]){display:none}sub,sup{font-size:75%;line-height:0;position:relative;vertical-align:baseline}sup{top:-0.5em}sub{bottom:-0.25em}img{border:0;-ms-interpolation-mode:bicubic}nav,section,aside,article,figure,header,footer,hgroup{display:block;clear:both}a{text-decoration:none}nav ul,footer ul{list-style-type:none}html{font-size:14px;line-height:1}input::-webkit-input-placeholder{color:#c0c4c8}
+</style>
+
+<link rel="preconnect" media="screen" href="https://static-fonts-css.sxlcdn.com" crossorigin="true" />
+<link rel="preload" media="screen" href="https://static-fonts-css.sxlcdn.com/css?family=Raleway:300,700|Long+Cang:regular|Noto+Sans+SC:100,200,300,regular,500,600,700,800,900|Montserrat:400,700&amp;subset=latin,latin-ext&amp;display=swap" as="font" />
+<link rel="stylesheet" media="print" href="https://static-fonts-css.sxlcdn.com/css?family=Raleway:300,700|Long+Cang:regular|Noto+Sans+SC:100,200,300,regular,500,600,700,800,900|Montserrat:400,700&amp;subset=latin,latin-ext&amp;display=swap" as="style" onload="this.media=&#39;all&#39;" />
+<link rel="preload stylesheet" media="screen" href="https://static-assets.sxlcdn.com/themes/s5-theme/main_v4.24ed631e59adcccfb0a4.bundle.css" as="style" type="text/css" onload="if(media!==&#39;screen&#39;)media=&#39;screen&#39;" />
+<link defer='true' href='https://user-assets.sxlcdn.com/images/1228338/FiM4SjmeLMsAjnwW7wVQOfzmxbZd.png?imageMogr2/strip/auto-orient/thumbnail/64x64&gt;/quality/90!/format/png' rel='shortcut icon' type='image/x-icon'>
+<script type='application/ld+json'>
+{
+  "@context": "https://schema.org",
+  "@type": "website",
+  "name": "死机工作室",
+  "description": ""
+}
+
+</script>
+<meta content='website' property='og:type'>
+<meta content='死机工作室 | 上线了sxl.cn' property='og:title'>
+<meta content='https://crashstudio.mysxl.cn/' property='og:url'>
+<meta content='https://user-assets.sxlcdn.com/images/1228338/FiM4SjmeLMsAjnwW7wVQOfzmxbZd.png?imageMogr2/strip/auto-orient/thumbnail/1200x630&gt;/quality/90!/format/png' property='og:image'>
+<meta content='死机工作室' property='og:site_name'>
+<meta content='' property='og:description'>
+<meta content='死机工作室' itemprop='name'>
+<meta content='' itemprop='description'>
+<meta content='https://user-assets.sxlcdn.com/images/1228338/FiM4SjmeLMsAjnwW7wVQOfzmxbZd.png?imageMogr2/strip/auto-orient/thumbnail/1200x630&gt;/quality/90!/format/png' itemprop='image'>
+<meta content='summary_large_image' name='twitter:card'>
+<meta content='死机工作室 | 上线了sxl.cn' name='twitter:title'>
+<meta content='' name='twitter:description'>
+<meta content='https://user-assets.sxlcdn.com/images/1228338/FiM4SjmeLMsAjnwW7wVQOfzmxbZd.png?imageMogr2/strip/auto-orient/thumbnail/1200x630&gt;/quality/90!/format/png' name='twitter:image'>
+<meta content='' name='description'>
+<meta content='' name='keywords'>
+<meta name="strikingly-host-suffix" content="sxl.cn" />
+<meta name="support-helper" content="{&quot;permalink&quot;:&quot;crashstudio&quot;,&quot;id&quot;:12880778}" />
+<link href="https://user-assets.sxlcdn.com/images/1228338/FiM4SjmeLMsAjnwW7wVQOfzmxbZd.png?imageMogr2/strip/auto-orient/thumbnail/64x64&gt;/quality/90!/format/png" rel="apple-touch-icon" sizes="58x58" />
+<link href="https://user-assets.sxlcdn.com/images/1228338/FiM4SjmeLMsAjnwW7wVQOfzmxbZd.png?imageMogr2/strip/auto-orient/thumbnail/64x64&gt;/quality/90!/format/png" rel="apple-touch-icon" sizes="76x76" />
+<link href="https://user-assets.sxlcdn.com/images/1228338/FiM4SjmeLMsAjnwW7wVQOfzmxbZd.png?imageMogr2/strip/auto-orient/thumbnail/64x64&gt;/quality/90!/format/png" rel="apple-touch-icon" sizes="80x80" />
+<link href="https://user-assets.sxlcdn.com/images/1228338/FiM4SjmeLMsAjnwW7wVQOfzmxbZd.png?imageMogr2/strip/auto-orient/thumbnail/64x64&gt;/quality/90!/format/png" rel="apple-touch-icon" sizes="87x87" />
+<link href="https://user-assets.sxlcdn.com/images/1228338/FiM4SjmeLMsAjnwW7wVQOfzmxbZd.png?imageMogr2/strip/auto-orient/thumbnail/64x64&gt;/quality/90!/format/png" rel="apple-touch-icon" sizes="114x114" />
+<link href="https://user-assets.sxlcdn.com/images/1228338/FiM4SjmeLMsAjnwW7wVQOfzmxbZd.png?imageMogr2/strip/auto-orient/thumbnail/64x64&gt;/quality/90!/format/png" rel="apple-touch-icon" sizes="120x120" />
+<link href="https://user-assets.sxlcdn.com/images/1228338/FiM4SjmeLMsAjnwW7wVQOfzmxbZd.png?imageMogr2/strip/auto-orient/thumbnail/64x64&gt;/quality/90!/format/png" rel="apple-touch-icon" sizes="152x152" />
+<link href="https://user-assets.sxlcdn.com/images/1228338/FiM4SjmeLMsAjnwW7wVQOfzmxbZd.png?imageMogr2/strip/auto-orient/thumbnail/64x64&gt;/quality/90!/format/png" rel="apple-touch-icon" sizes="167x167" />
+<link href="https://user-assets.sxlcdn.com/images/1228338/FiM4SjmeLMsAjnwW7wVQOfzmxbZd.png?imageMogr2/strip/auto-orient/thumbnail/64x64&gt;/quality/90!/format/png" rel="apple-touch-icon" sizes="180x180" />
+<link rel="canonical" href="https://crashstudio.mysxl.cn/" />
+<script>
+  if (!window.utils) window.utils = {}
+  window.utils.getCookieByName = (name) => {
+    const cookies = document.cookie.split(';')
+    for (const cookie of cookies) {
+      const [key, value] = cookie.trim().split('=')
+      if (key === name) {
+        return decodeURIComponent(value)
+      }
+    }
+    return ''
+  }
+</script>
+<script>
+var _strk = _strk || []
+_strk.push = function(arg1, arg2){
+  var _arrayPush = Array.prototype.push.bind(this)
+  if (typeof arg1 === 'string' && typeof arg2 === 'function') {
+    // Support _strk.push(event, fn) for better UX
+    _arrayPush([arg1, arg2])
+  } else {
+    _arrayPush.apply(this, arguments)
+  }
+}
+window.runAfterDomBinding = {
+  add: function(name, fn) {
+    _strk.push(['Page.didMount', fn])
+  }
+}
+</script>
+
+
+<!-- CUSTOM_CODE_START -->
+<!-- CUSTOM_CODE_END -->
+
+<meta name="asset-url" content="https://static-assets.sxlcdn.com" />
+<script>
+  (function() {
+    window.$B || (window.$B = {});
+  
+    window.utils || (window.utils = {});
+  
+    window.utils.getCookieValue = function(name) {
+      var cookie, cookies, key, value, _i, _len, _ref;
+      cookies = document.cookie.split(';');
+      for (_i = 0, _len = cookies.length; _i < _len; _i++) {
+        cookie = cookies[_i];
+        _ref = cookie.trim().split('='), key = _ref[0], value = _ref[1];
+        if (key === name) {
+          return decodeURIComponent(value);
+        }
+      }
+      return '';
+    };
+  
+  }).call(this);
+</script>
+<script src="https://static-assets.sxlcdn.com/detectIE-c385c24313ef0e9e4e7a1e131bf5e59f0fbd468f9f9ef44fd6739ae84ef0c0a4.js" async="async"></script>
+
+</head>
+<body class='show  locale-zh-CN' id='user_sites' theme_name='s5-theme'>
+<div class='product-sxl' data-id='12880778' id='s-page-container'>
+<style>#nav-popover-panel.nav-dropdown-popover{z-index:999999;padding:0 0;width:-webkit-max-content;width:-moz-max-content;width:max-content;}#nav-popover-panel.nav-dropdown-popover .inner-content{background-color:white;border:none;border-radius:0;padding:unset;}#nav-popover-panel.nav-dropdown-popover .inner-content .panel-container{background-color:white;display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;}#nav-popover-panel.nav-dropdown-popover .inner-content .panel-container .sub-panel{border-left:solid 1px #f4f6f8;}#nav-popover-panel.nav-dropdown-popover .inner-content .panel-container .main-panel,#nav-popover-panel.nav-dropdown-popover .inner-content .panel-container .sub-panel{max-height:46vh;overflow-y:auto;}#nav-popover-panel.nav-dropdown-popover .inner-content .panel-container .main-panel .inner-container,#nav-popover-panel.nav-dropdown-popover .inner-content .panel-container .sub-panel .inner-container{display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;}#nav-popover-panel.nav-dropdown-popover .inner-content .panel-container .main-panel ul,#nav-popover-panel.nav-dropdown-popover .inner-content .panel-container .sub-panel ul{background-color:white;padding:0 0;display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-flex-direction:column;-ms-flex-direction:column;flex-direction:column;text-align:left;box-shadow:none;margin:0;}#nav-popover-panel.nav-dropdown-popover .inner-content .panel-container .main-panel ul li,#nav-popover-panel.nav-dropdown-popover .inner-content .panel-container .sub-panel ul li{width:100%;padding:0 0;margin-left:0;margin-right:0;}#nav-popover-panel.nav-dropdown-popover .inner-content .panel-container .main-panel ul li a,#nav-popover-panel.nav-dropdown-popover .inner-content .panel-container .sub-panel ul li a,#nav-popover-panel.nav-dropdown-popover .inner-content .panel-container .main-panel ul li .s-nav-dropdown-item,#nav-popover-panel.nav-dropdown-popover .inner-content .panel-container .sub-panel ul li .s-nav-dropdown-item{display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-align-items:center;-webkit-box-align:center;-ms-flex-align:center;align-items:center;outline:none;padding:15px;max-width:300px;box-sizing:border-box;cursor:pointer;word-break:break-word;left:0;border:none;background-color:inherit;}#nav-popover-panel.nav-dropdown-popover .inner-content .panel-container .main-panel ul li a:hover,#nav-popover-panel.nav-dropdown-popover .inner-content .panel-container .sub-panel ul li a:hover,#nav-popover-panel.nav-dropdown-popover .inner-content .panel-container .main-panel ul li .s-nav-dropdown-item:hover,#nav-popover-panel.nav-dropdown-popover .inner-content .panel-container .sub-panel ul li .s-nav-dropdown-item:hover,#nav-popover-panel.nav-dropdown-popover .inner-content .panel-container .main-panel ul li a.selected,#nav-popover-panel.nav-dropdown-popover .inner-content .panel-container .sub-panel ul li a.selected,#nav-popover-panel.nav-dropdown-popover .inner-content .panel-container .main-panel ul li .s-nav-dropdown-item.selected,#nav-popover-panel.nav-dropdown-popover .inner-content .panel-container .sub-panel ul li .s-nav-dropdown-item.selected{background-color:inherit;}#nav-popover-panel.nav-dropdown-popover .inner-content .panel-container .main-panel ul li a:hover,#nav-popover-panel.nav-dropdown-popover .inner-content .panel-container .sub-panel ul li a:hover,#nav-popover-panel.nav-dropdown-popover .inner-content .panel-container .main-panel ul li .s-nav-dropdown-item:hover,#nav-popover-panel.nav-dropdown-popover .inner-content .panel-container .sub-panel ul li .s-nav-dropdown-item:hover{background-color:#f4f6f8;}#nav-popover-panel.nav-dropdown-popover .inner-content .panel-container .main-panel ul li a:before,#nav-popover-panel.nav-dropdown-popover .inner-content .panel-container .sub-panel ul li a:before,#nav-popover-panel.nav-dropdown-popover .inner-content .panel-container .main-panel ul li .s-nav-dropdown-item:before,#nav-popover-panel.nav-dropdown-popover .inner-content .panel-container .sub-panel ul li .s-nav-dropdown-item:before,#nav-popover-panel.nav-dropdown-popover .inner-content .panel-container .main-panel ul li a:after,#nav-popover-panel.nav-dropdown-popover .inner-content .panel-container .sub-panel ul li a:after,#nav-popover-panel.nav-dropdown-popover .inner-content .panel-container .main-panel ul li .s-nav-dropdown-item:after,#nav-popover-panel.nav-dropdown-popover .inner-content .panel-container .sub-panel ul li .s-nav-dropdown-item:after{content:none;}#nav-popover-panel.nav-dropdown-popover .inner-content .panel-container .main-panel ul li a .s-nav-text,#nav-popover-panel.nav-dropdown-popover .inner-content .panel-container .sub-panel ul li a .s-nav-text,#nav-popover-panel.nav-dropdown-popover .inner-content .panel-container .main-panel ul li .s-nav-dropdown-item .s-nav-text,#nav-popover-panel.nav-dropdown-popover .inner-content .panel-container .sub-panel ul li .s-nav-dropdown-item .s-nav-text,#nav-popover-panel.nav-dropdown-popover .inner-content .panel-container .main-panel ul li a .s-nav-dropdown-text,#nav-popover-panel.nav-dropdown-popover .inner-content .panel-container .sub-panel ul li a .s-nav-dropdown-text,#nav-popover-panel.nav-dropdown-popover .inner-content .panel-container .main-panel ul li .s-nav-dropdown-item .s-nav-dropdown-text,#nav-popover-panel.nav-dropdown-popover .inner-content .panel-container .sub-panel ul li .s-nav-dropdown-item .s-nav-dropdown-text{line-height:1.5;background:inherit;color:inherit;word-break:break-word;overflow :hidden;text-overflow:ellipsis;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;}#nav-popover-panel.nav-dropdown-popover .inner-content .panel-container .main-panel ul li a:not(.selected),#nav-popover-panel.nav-dropdown-popover .inner-content .panel-container .sub-panel ul li a:not(.selected),#nav-popover-panel.nav-dropdown-popover .inner-content .panel-container .main-panel ul li .s-nav-dropdown-item:not(.selected),#nav-popover-panel.nav-dropdown-popover .inner-content .panel-container .sub-panel ul li .s-nav-dropdown-item:not(.selected){color:#2e2e2f;}.css-1i6s2rt#nav-popover-panel.nav-dropdown-popover{position:fixed;left:0px;top:0px;right:px;bottom:px;display:none;padding-top:0px;margin-left:unset !important;}.css-1i6s2rt#nav-popover-panel.nav-dropdown-popover .inner-content{box-shadow:none;}.css-1i6s2rt#nav-popover-panel.nav-dropdown-popover .inner-content .panel-container{-webkit-flex-direction:row;-ms-flex-direction:row;flex-direction:row;}.css-1i6s2rt#nav-popover-panel.nav-dropdown-popover .inner-content .panel-container .main-panel ul li a:hover,.css-1i6s2rt#nav-popover-panel.nav-dropdown-popover .inner-content .panel-container .sub-panel ul li a:hover,.css-1i6s2rt#nav-popover-panel.nav-dropdown-popover .inner-content .panel-container .main-panel ul li .s-nav-dropdown-item:hover,.css-1i6s2rt#nav-popover-panel.nav-dropdown-popover .inner-content .panel-container .sub-panel ul li .s-nav-dropdown-item:hover,.css-1i6s2rt#nav-popover-panel.nav-dropdown-popover .inner-content .panel-container .main-panel ul li a.selected,.css-1i6s2rt#nav-popover-panel.nav-dropdown-popover .inner-content .panel-container .sub-panel ul li a.selected,.css-1i6s2rt#nav-popover-panel.nav-dropdown-popover .inner-content .panel-container .main-panel ul li .s-nav-dropdown-item.selected,.css-1i6s2rt#nav-popover-panel.nav-dropdown-popover .inner-content .panel-container .sub-panel ul li .s-nav-dropdown-item.selected{color:#0a0808;}.css-1i6s2rt#nav-popover-panel.nav-dropdown-popover .inner-content .panel-container .main-panel ul li a i.fa,.css-1i6s2rt#nav-popover-panel.nav-dropdown-popover .inner-content .panel-container .sub-panel ul li a i.fa,.css-1i6s2rt#nav-popover-panel.nav-dropdown-popover .inner-content .panel-container .main-panel ul li .s-nav-dropdown-item i.fa,.css-1i6s2rt#nav-popover-panel.nav-dropdown-popover .inner-content .panel-container .sub-panel ul li .s-nav-dropdown-item i.fa{margin:0 0 0 10px;}.css-6h3hcl .s-section:not(.s-slider-section):not(.s-grid-section):not(.s-new-gallery-section):not(.s-blog-section):not(.s-store-section):not(.s-new-media-section):not(.s-accordion-section){display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-box-pack:center;-webkit-justify-content:center;-ms-flex-pack:center;justify-content:center;-webkit-align-items:center;-webkit-box-align:center;-ms-flex-align:center;align-items:center;padding-top:173px !important;padding-bottom:75px !important;}.css-6h3hcl .s-section:not(.s-slider-section):not(.s-grid-section):not(.s-new-gallery-section):not(.s-blog-section):not(.s-store-section):not(.s-new-media-section):not(.s-accordion-section) .container{margin:0 3%;max-width:94%;box-sizing:border-box;width:1000px !important;}.css-1khdgcw .s-top-padding-half.s-section:not(.s-slider-section):not(.s-grid-section),.css-1khdgcw .s-top-padding-half.s-grid-section:not(._wide),.css-1khdgcw .s-top-padding-half.s-new-grid-section{padding-top:138px;}.css-1khdgcw .s-bottom-padding-half.s-section:not(.s-slider-section):not(.s-grid-section),.css-1khdgcw .s-bottom-padding-half.s-grid-section:not(._wide),.css-1khdgcw .s-bottom-padding-half.s-new-grid-section{padding-bottom:calc( 40px + 0px );}.css-1khdgcw .s-top-padding-none.s-section:not(.s-slider-section):not(.s-grid-section),.css-1khdgcw .s-top-padding-none.s-grid-section:not(._wide),.css-1khdgcw .s-top-padding-none.s-new-grid-section{padding-top:98px;}.css-1khdgcw .s-bottom-padding-none.s-section:not(.s-slider-section):not(.s-grid-section),.css-1khdgcw .s-bottom-padding-none.s-grid-section:not(._wide),.css-1khdgcw .s-bottom-padding-none.s-new-grid-section{padding-bottom:0;}.css-1khdgcw .s-section:not(.s-slider-section):not(.s-grid-section),.css-1khdgcw .s-grid-section:not(._wide),.css-1khdgcw .s-new-grid-section{padding-top:173px;padding-bottom:75px;}.css-1khdgcw .s-section.s-grid-section._wide:not(.s-new-grid-section){padding-top:98px;}.css-g6n6xt .s-section:not(.s-slider-section):not(.s-grid-section):not(.s-new-gallery-section):not(.s-blog-section):not(.s-store-section):not(.s-new-media-section):not(.s-accordion-section){display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-box-pack:center;-webkit-justify-content:center;-ms-flex-pack:center;justify-content:center;-webkit-align-items:center;-webkit-box-align:center;-ms-flex-align:center;align-items:center;padding-top:75px !important;padding-bottom:75px !important;}.css-g6n6xt .s-section:not(.s-slider-section):not(.s-grid-section):not(.s-new-gallery-section):not(.s-blog-section):not(.s-store-section):not(.s-new-media-section):not(.s-accordion-section) .container{margin:0 3%;max-width:94%;box-sizing:border-box;width:1200px !important;}.css-mpqikg.slide{false;}.css-mpqikg.slide .s-title{color:#1d2023;}.css-mpqikg.slide .s-subtitle{color:#0a0808;}.css-mpqikg.slide .s-item-title,.css-mpqikg.slide .s-ecommerce-card-view-card-name{color:#1d2023;}.css-mpqikg.slide .s-item-subtitle,.css-mpqikg.slide .s-ecommerce-card-view-wrapper .s-ecommerce-card-view-cards .s-ecommerce-card-view-card .s-ecommerce-card-view-card-price span,.css-mpqikg.slide .s-section-selector-group .s-ecommerce-card-view-card-price span,.css-mpqikg.slide .s-blog-info{color:#0a0808;}.css-mpqikg.slide .s-item-text,.css-mpqikg.slide .s-footer-text,.css-mpqikg.slide .s-blog-details-blurb{color:#0e0b0b;}.css-mpqikg.slide .s-map-loading{border:1px solid rgba(0,0,0,0.1);}.css-mpqikg.slide .s-map-loading .fa.fill-spinner-big{background-color:rgba(0,0,0,0.3);}.css-mpqikg .s-top-padding-half.s-section:not(.s-slider-section):not(.s-grid-section),.css-mpqikg .s-top-padding-half.s-grid-section:not(._wide),.css-mpqikg .s-top-padding-half.s-new-grid-section{padding-top:40px;}.css-mpqikg .s-bottom-padding-half.s-section:not(.s-slider-section):not(.s-grid-section),.css-mpqikg .s-bottom-padding-half.s-grid-section:not(._wide),.css-mpqikg .s-bottom-padding-half.s-new-grid-section{padding-bottom:calc( 40px + 0px );}.css-mpqikg .s-top-padding-none.s-section:not(.s-slider-section):not(.s-grid-section),.css-mpqikg .s-top-padding-none.s-grid-section:not(._wide),.css-mpqikg .s-top-padding-none.s-new-grid-section{padding-top:0px;}.css-mpqikg .s-bottom-padding-none.s-section:not(.s-slider-section):not(.s-grid-section),.css-mpqikg .s-bottom-padding-none.s-grid-section:not(._wide),.css-mpqikg .s-bottom-padding-none.s-new-grid-section{padding-bottom:0;}.css-mpqikg .s-section:not(.s-slider-section):not(.s-grid-section),.css-mpqikg .s-grid-section:not(._wide),.css-mpqikg .s-new-grid-section{padding-top:75px;padding-bottom:75px;}.css-1xpj73n.s-footer-section .s-footer-text,.css-1xpj73n.s-footer-section .s-terms-link{color:#0e0b0b;}.css-vtybll.s-footer-section .s-footer-text a{color:#a9aeb2;}.css-1fvzbvi.s-footer-section .s-component.s-social-media ul.s-social-media-buttons .s-social-icon{background:rgba(10,8,8,0.5);}</style><div data-hypernova-key="SiteBootstrapper" data-hypernova-id="82c4c0e6-dbdb-4ea5-a518-10b40d7100ff" data-hypernova-emotion-id="1iof6v2,1i6s2rt,6h3hcl,1khdgcw,g6n6xt,mpqikg,1xpj73n,vtybll,1fvzbvi"><script>window.ssrIsLoaded=true</script><div id="s-page-client-container"><div><div id="s-content" class="s-variation-default s-custom-colors s-animation-image_link_hover-zoom_in s-font-body-noto-sans-sc s-font-title-long-cang s-font-heading-yuanti s-font-button-raleway s-font-nav_item-yuanti s-font-nav_dropdown-noto-sans-sc s-font-weight-body-default s-font-weight-title-default s-font-weight-heading-default s-font-weight-300-button-raleway s-font-weight-nav_item-default s-font-weight-nav_dropdown-default s-entrance-mask s-template-s5-theme s-theme-alignment-center s-site-page-content" lang="zh-CN"><div style="margin:auto"><div class="social-thumbnail"><div style="display:none"><img src="https://user-assets.sxlcdn.com/images/1228338/FiM4SjmeLMsAjnwW7wVQOfzmxbZd.png?imageMogr2/strip/auto-orient/thumbnail/1200x630&gt;/quality/90!/format/png" width="300" height="300" alt="thumbnail image"/></div></div><div><style id="color-style-tag">.s-custom-colors .s-bg-overlay:before{background:rgba(5,4,4,0.35);}.s-custom-colors .s-component.s-social-media ul.s-social-media-buttons .s-social-icon{background:rgba(10,8,8,0.5);}.s-custom-colors .fixed-login-container .login-container{background: #0a0808;}.s-custom-colors .s-ecommerce-row-view-product .s-ecommerce-row-view-product-thumbnail-list ul li.current{border: 2px solid #0a0808}.s-custom-colors .s-ecommerce-card-view-wrapper .s-ecommerce-card-view-card .s-ecommerce-card-view-card-stock-warning{background: #0a0808;}.s-custom-colors .s-ecommerce-shopping-cart-wrapper .s-ecommerce-shopping-cart{background: #0a0808;}.s-custom-colors .s-ecommerce-shopping-cart-wrapper .s-ecommerce-shopping-cart.hovered{background: #0a0808;}.s-custom-colors .s-ecommerce-shopping-cart-wrapper .s-ecommerce-shopping-cart-mobile{
+        background: #dbdbdb;
+        border-top: 1px solid #afafaf;}.s-custom-colors .s-ecommerce-shopping-cart-wrapper .s-ecommerce-shopping-cart-mobile .check-btn{background: #0a0808;}.s-custom-colors .s-ecommerce-animation-item{
+        border: 2px solid #0a0808;
+        color: #0a0808;}.s-custom-colors .s-ecommerce-row-view-product .mobile-select .price-label{color: #0a0808}.s-custom-colors .s-ecommerce-row-view-product .mobile-select .variation-item.selected{border: 1px solid #0a0808; background: #0a0808;}.s-custom-colors .s-ecommerce-row-view-product .mobile-select .add-btn{background: #0a0808;}.s-custom-colors .s-ecommerce-row-view-product .slider-wrapper .slider-dot-wrapper .slider-dot{border: 1px solid #0a0808}.s-custom-colors .s-ecommerce-row-view-product .slider-wrapper .slider-dot-wrapper .slider-dot.selected{background: #0a0808}.s-custom-colors .s-section .s-category-bar .category-list .category-link-item.selected{color: #0a0808;}.s-custom-colors .s-section .s-category-bar .category-list .category-link-item.selected:after{background: #0a0808}.s-custom-colors .s-section .s-category-bar .category-list .category-link-item-wrapper:hover .category-link-item:not(.no-hover){color: #0a0808;}.s-custom-colors .s-ecommerce .s-ecommerce-products-wrapper .s-ecommerce-card-view-wrapper .s-ecommerce-card-view-detail .s-ecommerce-card-view-detail-header .next-product-btn{color: #0a0808;}.s-custom-colors .s-ecommerce .s-ecommerce-products-wrapper .s-ecommerce-card-view-wrapper .s-ecommerce-card-view-detail .s-ecommerce-card-view-detail-header .prev-product-btn{color: #0a0808;}.s-custom-colors .s-ecommerce .s-ecommerce-products-wrapper .s-ecommerce-card-view-wrapper .s-ecommerce-card-view-detail .s-ecommerce-card-view-detail-header .back-btn{color: #0a0808;}.s-custom-colors .s-ecommerce .s-ecommerce-products-wrapper .s-ecommerce-card-view-wrapper .s-ecommerce-card-view-detail .s-ecommerce-card-view-detail-header .next-product-btn:hover{color: #3b3939;}.s-custom-colors .s-ecommerce .s-ecommerce-products-wrapper .s-ecommerce-card-view-wrapper .s-ecommerce-card-view-detail .s-ecommerce-card-view-detail-header .prev-product-btn:hover{color: #3b3939;}.s-custom-colors .s-ecommerce .s-ecommerce-products-wrapper .s-ecommerce-card-view-wrapper .s-ecommerce-card-view-detail .s-ecommerce-card-view-detail-header .back-btn:hover{color: #3b3939;}.s-custom-colors .s-donation-section .s-component.s-donation .s-donation-progress .progress-bar .progress{background: #0a0808}.s-custom-colors .s-donation-section .s-component.s-donation .s-donation-progress .progress-bar .indicator:before{background: #0a0808}.s-custom-colors .s-donation-section .s-component.s-donation .s-donation-progress .progress-bar .indicator:after{border-top-color: #0a0808}.s-custom-colors {--main-color: #0a0808}.s-custom-colors .s-theme-color-1{color: #0a0808}.s-custom-colors .s-bg-theme-color-1{background-color: #0a0808}.s-custom-colors .s-bg-theme-color-fade-1{background-color: rgba(10,8,8,0.07)}.s-custom-colors .s-bg-theme-color-fade-2{background-color: rgba(10,8,8,0.2)}.s-custom-colors .s-border-theme-color-1{border-color: #0a0808}.s-custom-colors .s-button-theme-style{background-color: rgba(10,8,8,0.2); color: #0a0808}.s-custom-colors .s-button-theme-style-shadow{background-color: rgba(10,8,8,0.2); box-shadow: 0px 3px 0 rgba(10,8,8,0.2); color: #0a0808}.s-custom-colors .s-button-theme-style-border{background-color: rgba(10,8,8,0.2); border: 2px solid rgba(10,8,8,0.2); color1: #0a0808}.s-custom-colors .s-button-theme-style-important{background-color: rgba(10,8,8,0.2) !important; color: #0a0808 !important}
+.s-custom-colors .navigator .nav-container .nav ul li a:hover,
+.s-custom-colors .navigator .nav-container .nav ul li a.selected {
+  background: #ededed;
+}
+.s-custom-colors .navigator .nav-container .nav ul.items li,
+.s-custom-colors .navigator .nav-container .nav ul.items,
+.s-custom-colors .navigator {
+  border-color: #cac9c9;
+}
+
+.s-custom-colors .dummy-shadow {
+  box-shadow: #dbdbdb 0 0 10px 0 inset;
+}
+.navbar-drawer.strikingly-drawer ul#nav-drawer-list {
+  border-right: 1px solid #ededed;
+}
+.navbar-drawer.strikingly-drawer ul#nav-drawer-list li a.selected {
+  background: #ededed;
+  box-shadow: 5px 0 0 0 #cac9c9 inset;
+}
+.navbar-drawer.strikingly-drawer ul#nav-drawer-list li {
+  a:not(.social-media-link):not(.mobile-nav-button .s-common-button), .s-mobile-nav-dropdown-item, .s-mobile-membership-login-nav-item, .s-mobile-multi-lang, .s-mobile-nav-btn {
+    border-bottom: 1px solid #cac9c9;
+  }
+}.s-custom-colors .s-text-color-custom1{ color: #0a0808; }
+</style><style id="font-style-tag">
+    #s-content.s-font-body-noto-sans-sc .s-font-body {
+      font-family: "noto sans sc", sans-serif;
+    }
+    #s-content.s-font-body-noto-sans-sc .s-font-body:lang(ja) {
+      font-family: "noto sans sc", "ヒラギノ角ゴ Pro W3","Hiragino Kaku Gothic Pro",Osaka,"メイリオ",Meiryo,"ＭＳ Ｐゴシック","MS PGothic", sans-serif
+    }
+    #s-content.s-font-body-noto-sans-sc .s-font-body:lang(zh-cn),
+    #s-content.s-font-body-noto-sans-sc .s-font-body:lang(sxl),
+    #s-content.s-font-body-noto-sans-sc .s-font-body:lang(zh) {
+      font-family: "noto sans sc", 'PingFang SC',"Microsoft YaHei","微软雅黑",STXihei,"华文细黑", sans-serif
+    }
+    #s-content.s-font-body-noto-sans-sc .s-font-body:lang(zh-tw) {
+      font-family: "noto sans sc", 'Lisong Pro', 'PMingLiU', 'PingFang TC','Microsoft JhengHei',"微軟正黑體",STXihei, sans-serif;
+    }
+  
+    #s-content.s-font-title-long-cang .s-font-title {
+      font-family: "long cang", cursive;
+    }
+    #s-content.s-font-title-long-cang .s-font-title:lang(ja) {
+      font-family: "long cang", 'Kaiti SC', "ヒラギノ角ゴ Pro W3","Hiragino Kaku Gothic Pro",Osaka,"メイリオ",Meiryo,"ＭＳ Ｐゴシック","MS PGothic", cursive
+    }
+    #s-content.s-font-title-long-cang .s-font-title:lang(zh-cn),
+    #s-content.s-font-title-long-cang .s-font-title:lang(sxl),
+    #s-content.s-font-title-long-cang .s-font-title:lang(zh) {
+      font-family: "long cang", 'Kaiti SC', TKaiTi, KaiTi, Kaiti_GB2312, "PingFang SC", "Microsoft YaHei", 微软雅黑, STXihei, 华文细黑, cursive
+    }
+    #s-content.s-font-title-long-cang .s-font-title:lang(zh-tw) {
+      font-family: "long cang", 'Kaiti SC', 'PingFang TC','Microsoft JhengHei',"微軟正黑體",STXihei, cursive;
+    }
+  
+    #s-content.s-font-heading-yuanti .s-font-heading {
+      font-family: "Calibri-light", "Calibri", "YouYuan", "Yuanti SC", "Microsoft YaHei", serif;
+    }
+    #s-content.s-font-heading-yuanti .s-font-heading:lang(ja) {
+      font-family: "Calibri-light", "Calibri", "YouYuan", "Yuanti SC", "Microsoft YaHei", "ヒラギノ角ゴ Pro W3","Hiragino Kaku Gothic Pro",Osaka,"メイリオ",Meiryo,"ＭＳ Ｐゴシック","MS PGothic", serif
+    }
+    #s-content.s-font-heading-yuanti .s-font-heading:lang(zh-cn),
+    #s-content.s-font-heading-yuanti .s-font-heading:lang(sxl),
+    #s-content.s-font-heading-yuanti .s-font-heading:lang(zh) {
+      font-family: "Calibri-light", "Calibri", "YouYuan", "Yuanti SC", "Microsoft YaHei", Cardo, STSong, "Songti SC", SimSun, "PingFang SC", "Microsoft YaHei", 微软雅黑, STXihei, 华文细黑, serif
+    }
+    #s-content.s-font-heading-yuanti .s-font-heading:lang(zh-tw) {
+      font-family: "Calibri-light", "Calibri", "YouYuan", "Yuanti SC", "Microsoft YaHei", 'PingFang TC','Microsoft JhengHei',"微軟正黑體",STXihei, serif;
+    }
+  
+    #s-content.s-font-button-raleway .s-font-button {
+      font-family: raleway, helvetica, sans-serif;
+    }
+    #s-content.s-font-button-raleway .s-font-button:lang(ja) {
+      font-family: raleway, helvetica, "ヒラギノ角ゴ Pro W3","Hiragino Kaku Gothic Pro",Osaka,"メイリオ",Meiryo,"ＭＳ Ｐゴシック","MS PGothic", sans-serif
+    }
+    #s-content.s-font-button-raleway .s-font-button:lang(zh-cn),
+    #s-content.s-font-button-raleway .s-font-button:lang(sxl),
+    #s-content.s-font-button-raleway .s-font-button:lang(zh) {
+      font-family: raleway, helvetica, 'PingFang SC',"Microsoft YaHei","微软雅黑",STXihei,"华文细黑", sans-serif
+    }
+    #s-content.s-font-button-raleway .s-font-button:lang(zh-tw) {
+      font-family: raleway, helvetica, 'Lisong Pro', 'PMingLiU', 'PingFang TC','Microsoft JhengHei',"微軟正黑體",STXihei, sans-serif;
+    }
+  
+    #s-content.s-font-weight-300-button-raleway .s-font-button {
+      font-weight: 300;
+    }
+    #s-content.s-font-weight-300-button-raleway .s-font-button p,h1,h2,h3,h4,h5 {
+      font-weight: 300;
+    }
+    
+    #s-content.s-font-nav_item-yuanti .s-font-nav_item {
+      font-family: "Calibri-light", "Calibri", "YouYuan", "Yuanti SC", "Microsoft YaHei", serif;
+    }
+    #s-content.s-font-nav_item-yuanti .s-font-nav_item:lang(ja) {
+      font-family: "Calibri-light", "Calibri", "YouYuan", "Yuanti SC", "Microsoft YaHei", "ヒラギノ角ゴ Pro W3","Hiragino Kaku Gothic Pro",Osaka,"メイリオ",Meiryo,"ＭＳ Ｐゴシック","MS PGothic", serif
+    }
+    #s-content.s-font-nav_item-yuanti .s-font-nav_item:lang(zh-cn),
+    #s-content.s-font-nav_item-yuanti .s-font-nav_item:lang(sxl),
+    #s-content.s-font-nav_item-yuanti .s-font-nav_item:lang(zh) {
+      font-family: "Calibri-light", "Calibri", "YouYuan", "Yuanti SC", "Microsoft YaHei", Cardo, STSong, "Songti SC", SimSun, "PingFang SC", "Microsoft YaHei", 微软雅黑, STXihei, 华文细黑, serif
+    }
+    #s-content.s-font-nav_item-yuanti .s-font-nav_item:lang(zh-tw) {
+      font-family: "Calibri-light", "Calibri", "YouYuan", "Yuanti SC", "Microsoft YaHei", 'PingFang TC','Microsoft JhengHei',"微軟正黑體",STXihei, serif;
+    }
+  
+    #s-content.s-font-nav_dropdown-noto-sans-sc .s-font-nav_dropdown {
+      font-family: "noto sans sc", sans-serif;
+    }
+    #s-content.s-font-nav_dropdown-noto-sans-sc .s-font-nav_dropdown:lang(ja) {
+      font-family: "noto sans sc", "ヒラギノ角ゴ Pro W3","Hiragino Kaku Gothic Pro",Osaka,"メイリオ",Meiryo,"ＭＳ Ｐゴシック","MS PGothic", sans-serif
+    }
+    #s-content.s-font-nav_dropdown-noto-sans-sc .s-font-nav_dropdown:lang(zh-cn),
+    #s-content.s-font-nav_dropdown-noto-sans-sc .s-font-nav_dropdown:lang(sxl),
+    #s-content.s-font-nav_dropdown-noto-sans-sc .s-font-nav_dropdown:lang(zh) {
+      font-family: "noto sans sc", 'PingFang SC',"Microsoft YaHei","微软雅黑",STXihei,"华文细黑", sans-serif
+    }
+    #s-content.s-font-nav_dropdown-noto-sans-sc .s-font-nav_dropdown:lang(zh-tw) {
+      font-family: "noto sans sc", 'Lisong Pro', 'PMingLiU', 'PingFang TC','Microsoft JhengHei',"微軟正黑體",STXihei, sans-serif;
+    }
+  </style></div><style data-emotion="css 1sgvz1t">.css-1sgvz1t{--s-pre-color0:#0e0b0b;--s-pre-color1:#443636;--s-pre-color2:#7d6464;--s-pre-color3:#ad9999;--s-pre-color4:#dbd2d2;--s-pre-color5:#0e0b0b;--s-pre-color6:#443636;--s-pre-color7:#7d6464;--s-pre-color8:#ad9999;--s-pre-color9:#dbd2d2;--s-pre-color10:#ffffff;--s-pre-color11:#555555;--s-pre-color12:#000000;--s-pre-color13:#816354;--s-pre-color14:#ff4d4d;--s-pre-color15:#ffa64d;--s-pre-color16:#9cce06;--s-pre-color17:#26c9ff;}.css-1sgvz1t.s-nav.navigator .s-navbar-desktop{background:rgba(0, 0, 0, 0);position:absolute;left:0;z-index:201;width:100%;box-sizing:border-box;}.css-1sgvz1t.s-nav.navigator .s-navbar-desktop:not(.s-new-layout-g) .s-nav-social-media.has-social-media-contact-list{background-color:rgba(255, 255, 255, 0.1);}.css-1sgvz1t.s-nav.navigator .s-navbar-desktop.s-new-layout-i .ant-drawer-content{background:#fff;}.css-1sgvz1t.s-nav.navigator .s-navbar-desktop .s-nav-icons>.s-nav-li,.css-1sgvz1t.s-nav.navigator .s-navbar-desktop .s-uncollapsed-nav>.s-nav-li,.css-1sgvz1t.s-nav.navigator .s-navbar-desktop .s-nav-icons>div>.s-nav-li,.css-1sgvz1t.s-nav.navigator .s-navbar-desktop .s-common-button{font-size:100%;}.css-1sgvz1t.s-nav.navigator .s-navbar-desktop .s-common-button{padding:12px 20px;}.css-1sgvz1t.s-nav.navigator .s-navbar-desktop .s-navbar-dropdown ul li{text-align:left;}.css-1sgvz1t.s-nav.navigator .s-navbar-desktop .s-nav-items-and-links .s-nav-li.s-navbar-dropdown li.selected>.s-nav-link-container,.css-1sgvz1t.s-nav.navigator .s-navbar-desktop .s-nav-items-and-links .s-nav-li.s-navbar-dropdown li>.s-nav-link-container:hover{background:#f2f2f2;}.css-1sgvz1t.s-nav.navigator .s-navbar-desktop .s-navbar-dropdown .social-medial-li:hover{background:#f2f2f2;}.css-1sgvz1t.s-nav.navigator .s-navbar-desktop .s-navbar-dropdown ul{border-radius:4px;}.css-1sgvz1t.s-nav.navigator .s-navbar-desktop .s-collapsed-nav{color:#2e2e2f;background:white;}.css-1sgvz1t.s-nav.navigator .s-navbar-desktop .s-collapsed-nav .s-nav-dropdown-item{color:inherit;}.css-1sgvz1t.s-nav.navigator .s-navbar-desktop.s-bg-light-text .membership-nav-container ul li a{color:rgba(0, 0, 0, 0.8)!important;}.css-1sgvz1t.s-nav.navigator .s-navbar-desktop .s-ecommerce-shopping-cart .fa{margin:0 5px 0 0;}.css-1sgvz1t.s-nav.navigator .s-navbar-desktop.s-navbar-desktop-fixed:not(.is-not-sticky-navbar){top:0;left:0px;width:calc(100% - 0px);}.css-1sgvz1t.s-nav.navigator .s-navbar-desktop.s-navbar-desktop-fixed ._alternative .s-logo-image-normal{display:none;}.css-1sgvz1t.s-nav.navigator .s-navbar-desktop.s-navbar-desktop-fixed ._alternative .s-logo-image-alternative{display:inline-block;}.css-1sgvz1t.s-nav.navigator .s-navbar-desktop.s-navbar-desktop-fixed ._alternative .s-logo-image img{max-height:40px;}.css-1sgvz1t.s-nav.navigator .s-navbar-desktop.s-new-layout.s-new-layout-f.inline-layout{background:rgba(0, 0, 0, 0);}.css-1sgvz1t.s-nav.navigator .s-navbar-desktop.s-new-layout.s-new-layout-g .s-nav-icons .fa-search,.css-1sgvz1t.s-nav.navigator .s-navbar-desktop.s-new-layout.s-new-layout-g .s-nav-icons .fa-shopping-cart,.css-1sgvz1t.s-nav.navigator .s-navbar-desktop.s-new-layout.s-new-layout-g .s-nav-icons .entypo-user{margin:0 10px 0 0;}.css-1sgvz1t.s-nav.navigator .s-navbar-desktop.s-new-layout.s-new-layout-g .s-nav-icons .fa-search{margin:0 8px 0 0;}.css-1sgvz1t.s-nav.navigator .s-navbar-desktop.s-new-layout.s-new-layout-g .s-nav-icons >div.s-nav-li:last-child{left:20px;}.css-1sgvz1t.s-nav.navigator .s-navbar-desktop .s-nav-items-and-links{-webkit-box-flex:1;-webkit-flex-grow:1;-ms-flex-positive:1;flex-grow:1;text-align:right;}.css-1sgvz1t.s-nav.navigator .s-navbar-desktop .s-nav-items-and-links li{display:inline-block;}.css-1sgvz1t.s-nav.navigator .s-navbar-desktop .s-nav-items-and-links li a,.css-1sgvz1t.s-nav.navigator .s-navbar-desktop .s-nav-items-and-links li .s-nav-dropdown-item,.css-1sgvz1t.s-nav.navigator .s-navbar-desktop .s-nav-items-and-links li .login-nav-item{font-weight:bold;}.css-1sgvz1t.s-nav.navigator .s-navbar-desktop .s-navbar-dropdown li{display:block;}.css-1sgvz1t.s-nav.navigator .s-navbar-desktop.topBar .s-nav-inner .s-nav-social-media.has-social-media-contact-list{margin:0 auto;}.css-1sgvz1t.s-nav.navigator .s-navbar-desktop.topBar .s-nav-inner .s-nav-social-media.has-social-media-contact-list>:first-child{margin-left:0;padding-left:0;}.css-1sgvz1t.s-nav.navigator .s-navbar-desktop.topBar .s-nav-inner .s-nav-social-media.has-social-media-contact-list>:last-child{margin-right:0;padding-right:0;}.css-1sgvz1t.s-nav.navigator .s-navbar-desktop.topBar .s-nav-inner .s-nav-inner-wrap{display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;position:relative;-webkit-align-items:center;-webkit-box-align:center;-ms-flex-align:center;align-items:center;}.css-1sgvz1t.s-nav.navigator .s-navbar-desktop .s-logo-title{font-size:120%;margin-left:10px;margin-right:10px;}.css-1sgvz1t.s-nav.navigator .s-navbar-desktop .s-logo .s-image{max-width:240px;}.css-1sgvz1t.s-nav.navigator .s-navbar-desktop .s-nav-btn{margin:0 10px;}.css-1sgvz1t.s-nav.navigator .s-navbar-desktop .s-logo-image{margin:0 10px 0 0;}.css-1sgvz1t.s-nav.navigator .s-navbar-desktop .s-logo-image img{max-height:60px;}.css-1sgvz1t.s-nav.navigator .s-navbar-desktop .s-common-button{padding:12px 20px;}.css-1sgvz1t.s-nav.navigator .s-navbar-desktop.s-new-layout-c:not(.in-editor) .s-logo-title{min-width:auto;}.css-1sgvz1t.s-nav.navigator .s-navbar-desktop.s-new-layout-c:not(.in-editor):not(.has-button) .s-nav-btn{display:none;width:0;}.css-1sgvz1t.s-nav.navigator .s-navbar-desktop.s-new-layout-c:not(.in-editor):not(.has-title) .s-logo-title{display:none;width:0;}.css-1sgvz1t.s-nav.navigator .s-navbar-desktop.s-navbar-desktop-normal{visibility:hidden;opacity:0;}@media screen and (min-width: 728px){.css-1sgvz1t.s-nav.navigator .s-navbar-desktop.s-navbar-desktop-fixed{display:block;}}.css-1sgvz1t.s-nav.navigator .s-navbar-desktop.s-navbar-desktop-fixed._alternative{box-shadow:0 1px rgba(0, 0, 0, 0.12);}.css-1sgvz1t.s-nav.navigator .s-navbar-desktop.s-navbar-desktop-fixed .s-logo-image-1{display:inline-block;}.css-1sgvz1t.s-nav.navigator .s-navbar-desktop.s-navbar-desktop-fixed .s-logo-image-2{display:none;}.css-1sgvz1t.s-nav.navigator .s-navbar-desktop .s-nav-inner-wrap>:first-child{margin-left:0;padding-left:0;}.css-1sgvz1t.s-nav.navigator .s-navbar-desktop .s-nav-inner-wrap>:last-child{margin-right:0;padding-right:0;}.s-product-page-content .css-1sgvz1t.s-nav.navigator .s-navbar-desktop.s-navbar-desktop-normal,.s-booking-page-content .css-1sgvz1t.s-nav.navigator .s-navbar-desktop.s-navbar-desktop-normal,.s-item-page-content .css-1sgvz1t.s-nav.navigator .s-navbar-desktop.s-navbar-desktop-normal{position:static;}.css-1sgvz1t.s-nav.navigator .s-navbar-desktop .s-nav-inner,.css-1sgvz1t.s-nav.navigator .s-navbar-desktop .s-nav-inner-wrap{margin:auto;}.css-1sgvz1t.s-nav.navigator .s-navbar-desktop .s-nav-inner-wrap>:last-child.s-nav-items-and-links .s-uncollapsed-nav li:nth-last-child(1) .s-nav-link-container,.css-1sgvz1t.s-nav.navigator .s-navbar-desktop .s-nav-inner-wrap>:last-child.s-nav-items-and-links .s-uncollapsed-nav li:nth-last-child(2) .s-nav-link-container{padding-right:0;}.css-1sgvz1t.s-nav.navigator .s-navbar-desktop .s-nav-inner-wrap>:last-child.s-icons>:last-child.s-nav-icons>:last-child.site-search .s-nav-link-container{padding-right:0;}.css-1sgvz1t.s-nav.navigator .s-navbar-desktop .s-nav-inner-wrap>:last-child.s-icons>:last-child.s-nav-icons>:last-child.membership-nav-container>.s-nav-li>:last-child.s-nav-li .s-nav-link-container{padding-right:0;}.css-1sgvz1t.s-nav.navigator .s-navbar-desktop .s-nav-inner-wrap>:last-child.s-icons>:last-child.s-nav-icons>:last-child.shopping-cart-nav-container>.s-nav-link-container{padding-right:0;}.css-1sgvz1t.s-nav.navigator .s-navbar-desktop .s-nav-inner-wrap>:last-child.s-icons>:last-child.s-nav-icons>:last-child.multi-lang-nav-container>.multi-lang-nav>.s-nav-dropdown>.s-nav-link-container{padding-right:0;}.css-1sgvz1t.s-nav.navigator .s-navbar-desktop .s-nav-inner-wrap>:last-child.s-icons>:last-child.s-nav-social-media{padding-right:0;}.css-1sgvz1t.s-nav.navigator .s-navbar-desktop .s-nav-inner-wrap>:last-child.s-icons>:last-child.s-nav-social-media .s-social-media-buttons-wrap>:last-child.s-social-media-button{margin-right:0;}.css-1sgvz1t.s-nav.navigator .s-navbar-desktop .s-nav-inner-wrap>:last-child.s-icons>:last-child.s-nav-social-media .social-media-link-wrap{margin-right:0;}.css-1sgvz1t.s-nav.navigator .s-navbar-desktop .s-nav-inner>.s-nav-social-media.has-social-media-contact-list>.social-media-contact-list-wrapper>:last-child.social-media-link-wrap{margin-right:0;}.css-1sgvz1t.s-nav.navigator .s-navbar-desktop .s-nav-inner>.s-nav-social-media.has-social-media-contact-list>.social-media-contact-list-wrapper>:last-child.social-media-contact-list-wrap{margin-right:0;}.css-1sgvz1t.navigator .s-new-layout:not(.s-new-layout-g):not(.topBlock) .s-nav-inner-wrap{padding:20px;}.css-1sgvz1t.navigator .s-new-layout:not(.s-new-layout-g) .s-nav-inner .s-nav-social-media.has-social-media-contact-list{padding:8px 20px 8px;}.css-1sgvz1t.navigator .s-new-layout:not(.s-new-layout-g) .s-nav-inner .s-nav-social-media.has-social-media-contact-list .social-media-contact-item{margin:0;}.css-1sgvz1t.navigator .s-new-layout:not(.s-new-layout-g) .s-nav-inner .s-nav-social-media.has-social-media-contact-list .s-social-media-button{margin:0;margin-left:20px;}.css-1sgvz1t.navigator .s-new-layout:not(.s-new-layout-g) .s-nav-inner .s-nav-social-media.has-social-media-contact-list .social-media-link:last-child{margin-right:0;}.css-1sgvz1t.navigator .s-new-layout:not(.s-new-layout-g) .s-nav-inner .s-nav-social-media.has-social-media-contact-list .fb-counter{margin:0 -15px;}.css-1sgvz1t.navigator .s-new-layout .social-contact-icon{margin-right:10px;}.css-1sgvz1t .s-navbar-mobile-header{background:rgba(0, 0, 0, 0);padding:5px;min-height:50px;}@media screen and (max-width:727px){.css-1sgvz1t.s-nav.navigator .s-navbar-desktop{display:none;}}</style><div name="topBar" font-size="100%" type="NavTheme" id="f_a7eefaef-c78a-4fe1-925d-f515062961c4" class="s-nav navigator css-1sgvz1t css-3hwk9u0" style="--borderColor:#000;--textColor:#0a0808;--blockTextColor:#0a0808;--blockBackgroundColor:#cecece"><div class="s-navbar-desktop s-navbar-desktop-normal s-bg-light-text s-new-layout topBar s-new-layout-a s-nav-spacing-compact s-nav-highlight-underline s-nav-drop-shadow-no s-nav-sticky-drop-shadow-default overlaps-content has-new-layout has-image2 has-title s-nav-transparent-desktop"><div class="s-nav-inner nav-item-loaded"><div class="s-nav-inner-wrap"><div class="s-logo"><style data-emotion="css fisrrk">.css-fisrrk{position:relative;}.s-navbar-desktop-normal .css-fisrrk .s-logo-image-alternative{display:none;}.s-navbar-desktop-fixed .css-fisrrk{position:relative;}.s-navbar-desktop-fixed .css-fisrrk .s-logo-image-alternative>.s-logo-image.image1{display:none;}</style><div class=" css-fisrrk css-ufxpkf0"><div class="s-logo-image-normal"><div class="s-logo-image image1"><div class="s-component s-image"><div><div class="s-component-content"><div class="s-img-wrapper"><img src="//user-assets.sxlcdn.com/images/1228338/Fh_pxdSEcnKcbiqfq6FMJ2AXCoy5.png?imageMogr2/strip/auto-orient/thumbnail/300x300&gt;/quality/90!/format/png" alt="broken image" title="" class="crop-default" data-description="" data-image-link="javascript:void(0);" width="300" height="300" style="width:auto;height:auto"/></div></div></div></div></div></div><div class="s-logo-image-alternative"><div class="s-logo-image image1"><div class="s-component s-image"><div><div class="s-component-content"><div class="s-img-wrapper"><img src="//user-assets.sxlcdn.com/images/1228338/Fh_pxdSEcnKcbiqfq6FMJ2AXCoy5.png?imageMogr2/strip/auto-orient/thumbnail/300x300&gt;/quality/90!/format/png" alt="broken image" title="" class="crop-default" data-description="" data-image-link="javascript:void(0);" width="300" height="300" style="width:auto;height:auto"/></div></div></div></div></div><div class="s-logo-image image2"><div class="s-component s-image"><div><div class="s-component-content"><div class="s-img-wrapper"><img src="//assets.strikingly.com/assets/themes/fresh/power.png" alt="broken image" title="" class="crop-default" data-description="" data-image-link="javascript:void(0);" width="300" height="300" style="width:auto;height:auto"/></div></div></div></div></div></div></div></div><div class="s-logo-title"><div class="s-component s-text"><div class=""><div class="s-component-content s-font-title" style="white-space:pre-wrap"><div class="s-rich-text-wrapper" style="display: block;"><p class=" s-rich-text-wrapper">死机工作室</p></div></div></div></div></div><div class="s-nav-items-and-links"><ul class="s-uncollapsed-nav"><li class="s-nav-li selected"><div class="s-nav-link-container"><a target="_self" href="/"><span class="s-font-nav_item s-nav-text">首页</span></a></div></li><li class="s-nav-li"><div class="s-nav-link-container"><a target="_self" href="/#_2"><span class="s-font-nav_item s-nav-text">自我介绍</span></a></div></li><li class="s-nav-li"><div class="s-nav-link-container"><a target="_self" href="/#_3"><span class="s-font-nav_item s-nav-text">公告</span></a></div></li><li class="s-nav-li"><div class="s-nav-link-container"><a target="_self" href="/#_4"><span class="s-font-nav_item s-nav-text">博客</span></a></div></li><li class="s-nav-li"><div class="s-nav-link-container"><a target="_self" href="/#_5"><span class="s-font-nav_item s-nav-text">资源站</span></a></div></li><li class="s-nav-li s-navbar-dropdown is-category-menu"><div class="s-nav-link-container located-dropdown-item" style="position:relative;pointer-events:auto"><div class="s-nav-link-container"><span class="s-nav-dropdown-item s-nav-item" style="display:flex;align-items:center;justify-content:space-between"><span class="s-font-nav_item s-nav-dropdown-text">博客分类<!-- --> </span><i class="fa drop-down-icon-bold fas fa-chevron-down"></i></span></div><div id="nav-popover-panel" class="nav-dropdown-popover css-1i6s2rt"><div class="inner-content"><div class="panel-container s-variation-default s-custom-colors s-font-body-noto-sans-sc s-font-title-long-cang s-font-heading-yuanti s-font-button-raleway s-font-nav_item-yuanti s-font-nav_dropdown-noto-sans-sc s-font-weight-body-default s-font-weight-title-default s-font-weight-heading-default s-font-weight-300-button-raleway s-font-weight-nav_item-default s-font-weight-nav_dropdown-default" id="nav-dropdown-panel"><style id="font-style-tag-nav-dropdown-panel">
+    #nav-dropdown-panel.s-font-body-noto-sans-sc .s-font-body {
+      font-family: "noto sans sc", sans-serif;
+    }
+    #nav-dropdown-panel.s-font-body-noto-sans-sc .s-font-body:lang(ja) {
+      font-family: "noto sans sc", "ヒラギノ角ゴ Pro W3","Hiragino Kaku Gothic Pro",Osaka,"メイリオ",Meiryo,"ＭＳ Ｐゴシック","MS PGothic", sans-serif
+    }
+    #nav-dropdown-panel.s-font-body-noto-sans-sc .s-font-body:lang(zh-cn),
+    #nav-dropdown-panel.s-font-body-noto-sans-sc .s-font-body:lang(sxl),
+    #nav-dropdown-panel.s-font-body-noto-sans-sc .s-font-body:lang(zh) {
+      font-family: "noto sans sc", 'PingFang SC',"Microsoft YaHei","微软雅黑",STXihei,"华文细黑", sans-serif
+    }
+    #nav-dropdown-panel.s-font-body-noto-sans-sc .s-font-body:lang(zh-tw) {
+      font-family: "noto sans sc", 'Lisong Pro', 'PMingLiU', 'PingFang TC','Microsoft JhengHei',"微軟正黑體",STXihei, sans-serif;
+    }
+  
+    #nav-dropdown-panel.s-font-title-long-cang .s-font-title {
+      font-family: "long cang", cursive;
+    }
+    #nav-dropdown-panel.s-font-title-long-cang .s-font-title:lang(ja) {
+      font-family: "long cang", 'Kaiti SC', "ヒラギノ角ゴ Pro W3","Hiragino Kaku Gothic Pro",Osaka,"メイリオ",Meiryo,"ＭＳ Ｐゴシック","MS PGothic", cursive
+    }
+    #nav-dropdown-panel.s-font-title-long-cang .s-font-title:lang(zh-cn),
+    #nav-dropdown-panel.s-font-title-long-cang .s-font-title:lang(sxl),
+    #nav-dropdown-panel.s-font-title-long-cang .s-font-title:lang(zh) {
+      font-family: "long cang", 'Kaiti SC', TKaiTi, KaiTi, Kaiti_GB2312, "PingFang SC", "Microsoft YaHei", 微软雅黑, STXihei, 华文细黑, cursive
+    }
+    #nav-dropdown-panel.s-font-title-long-cang .s-font-title:lang(zh-tw) {
+      font-family: "long cang", 'Kaiti SC', 'PingFang TC','Microsoft JhengHei',"微軟正黑體",STXihei, cursive;
+    }
+  
+    #nav-dropdown-panel.s-font-heading-yuanti .s-font-heading {
+      font-family: "Calibri-light", "Calibri", "YouYuan", "Yuanti SC", "Microsoft YaHei", serif;
+    }
+    #nav-dropdown-panel.s-font-heading-yuanti .s-font-heading:lang(ja) {
+      font-family: "Calibri-light", "Calibri", "YouYuan", "Yuanti SC", "Microsoft YaHei", "ヒラギノ角ゴ Pro W3","Hiragino Kaku Gothic Pro",Osaka,"メイリオ",Meiryo,"ＭＳ Ｐゴシック","MS PGothic", serif
+    }
+    #nav-dropdown-panel.s-font-heading-yuanti .s-font-heading:lang(zh-cn),
+    #nav-dropdown-panel.s-font-heading-yuanti .s-font-heading:lang(sxl),
+    #nav-dropdown-panel.s-font-heading-yuanti .s-font-heading:lang(zh) {
+      font-family: "Calibri-light", "Calibri", "YouYuan", "Yuanti SC", "Microsoft YaHei", Cardo, STSong, "Songti SC", SimSun, "PingFang SC", "Microsoft YaHei", 微软雅黑, STXihei, 华文细黑, serif
+    }
+    #nav-dropdown-panel.s-font-heading-yuanti .s-font-heading:lang(zh-tw) {
+      font-family: "Calibri-light", "Calibri", "YouYuan", "Yuanti SC", "Microsoft YaHei", 'PingFang TC','Microsoft JhengHei',"微軟正黑體",STXihei, serif;
+    }
+  
+    #nav-dropdown-panel.s-font-button-raleway .s-font-button {
+      font-family: raleway, helvetica, sans-serif;
+    }
+    #nav-dropdown-panel.s-font-button-raleway .s-font-button:lang(ja) {
+      font-family: raleway, helvetica, "ヒラギノ角ゴ Pro W3","Hiragino Kaku Gothic Pro",Osaka,"メイリオ",Meiryo,"ＭＳ Ｐゴシック","MS PGothic", sans-serif
+    }
+    #nav-dropdown-panel.s-font-button-raleway .s-font-button:lang(zh-cn),
+    #nav-dropdown-panel.s-font-button-raleway .s-font-button:lang(sxl),
+    #nav-dropdown-panel.s-font-button-raleway .s-font-button:lang(zh) {
+      font-family: raleway, helvetica, 'PingFang SC',"Microsoft YaHei","微软雅黑",STXihei,"华文细黑", sans-serif
+    }
+    #nav-dropdown-panel.s-font-button-raleway .s-font-button:lang(zh-tw) {
+      font-family: raleway, helvetica, 'Lisong Pro', 'PMingLiU', 'PingFang TC','Microsoft JhengHei',"微軟正黑體",STXihei, sans-serif;
+    }
+  
+    #nav-dropdown-panel.s-font-nav_item-yuanti .s-font-navitem {
+      font-family: "Calibri-light", "Calibri", "YouYuan", "Yuanti SC", "Microsoft YaHei", serif;
+    }
+    #nav-dropdown-panel.s-font-nav_item-yuanti .s-font-navitem:lang(ja) {
+      font-family: "Calibri-light", "Calibri", "YouYuan", "Yuanti SC", "Microsoft YaHei", "ヒラギノ角ゴ Pro W3","Hiragino Kaku Gothic Pro",Osaka,"メイリオ",Meiryo,"ＭＳ Ｐゴシック","MS PGothic", serif
+    }
+    #nav-dropdown-panel.s-font-nav_item-yuanti .s-font-navitem:lang(zh-cn),
+    #nav-dropdown-panel.s-font-nav_item-yuanti .s-font-navitem:lang(sxl),
+    #nav-dropdown-panel.s-font-nav_item-yuanti .s-font-navitem:lang(zh) {
+      font-family: "Calibri-light", "Calibri", "YouYuan", "Yuanti SC", "Microsoft YaHei", Cardo, STSong, "Songti SC", SimSun, "PingFang SC", "Microsoft YaHei", 微软雅黑, STXihei, 华文细黑, serif
+    }
+    #nav-dropdown-panel.s-font-nav_item-yuanti .s-font-navitem:lang(zh-tw) {
+      font-family: "Calibri-light", "Calibri", "YouYuan", "Yuanti SC", "Microsoft YaHei", 'PingFang TC','Microsoft JhengHei',"微軟正黑體",STXihei, serif;
+    }
+  
+    #nav-dropdown-panel.s-font-nav_dropdown-noto-sans-sc .s-font-navdropdown {
+      font-family: "noto sans sc", sans-serif;
+    }
+    #nav-dropdown-panel.s-font-nav_dropdown-noto-sans-sc .s-font-navdropdown:lang(ja) {
+      font-family: "noto sans sc", "ヒラギノ角ゴ Pro W3","Hiragino Kaku Gothic Pro",Osaka,"メイリオ",Meiryo,"ＭＳ Ｐゴシック","MS PGothic", sans-serif
+    }
+    #nav-dropdown-panel.s-font-nav_dropdown-noto-sans-sc .s-font-navdropdown:lang(zh-cn),
+    #nav-dropdown-panel.s-font-nav_dropdown-noto-sans-sc .s-font-navdropdown:lang(sxl),
+    #nav-dropdown-panel.s-font-nav_dropdown-noto-sans-sc .s-font-navdropdown:lang(zh) {
+      font-family: "noto sans sc", 'PingFang SC',"Microsoft YaHei","微软雅黑",STXihei,"华文细黑", sans-serif
+    }
+    #nav-dropdown-panel.s-font-nav_dropdown-noto-sans-sc .s-font-navdropdown:lang(zh-tw) {
+      font-family: "noto sans sc", 'Lisong Pro', 'PMingLiU', 'PingFang TC','Microsoft JhengHei',"微軟正黑體",STXihei, sans-serif;
+    }
+  </style><div class="main-panel"><ul><li><a class="s-nav-dropdown-item" target="_self" href="/blog/categories"><span class="s-font-nav_dropdown s-nav-text">所有博客分类</span></a></li></ul></div></div></div></div></div></li><li class="s-nav-li s-nav-ellipsis hidden s-navbar-dropdown _down"><div class="s-nav-link-container"><span class="s5-inline-switch"><span class="s-font-body s-nav-dropdown-text" style="display:flex;align-items:center">… <!-- --> <i style="display:inline" class="fa drop-down-icon-bold fas fa-chevron-down"></i></span></span></div><ul class="s-collapsed-nav"><li class="s-nav-li selected"><div class="s-nav-link-container"><a target="_self" href="/"><span class="s-font-nav_item s-nav-text">首页</span></a></div></li><li class="s-nav-li"><div class="s-nav-link-container"><a target="_self" href="/#_2"><span class="s-font-nav_item s-nav-text">自我介绍</span></a></div></li><li class="s-nav-li"><div class="s-nav-link-container"><a target="_self" href="/#_3"><span class="s-font-nav_item s-nav-text">公告</span></a></div></li><li class="s-nav-li"><div class="s-nav-link-container"><a target="_self" href="/#_4"><span class="s-font-nav_item s-nav-text">博客</span></a></div></li><li class="s-nav-li"><div class="s-nav-link-container"><a target="_self" href="/#_5"><span class="s-font-nav_item s-nav-text">资源站</span></a></div></li><li class="s-nav-li s-navbar-dropdown is-category-menu"><div class="s-nav-link-container located-dropdown-item" style="position:relative;pointer-events:auto"><div class="s-nav-link-container"><span class="s-nav-dropdown-item s-nav-item" style="display:flex;align-items:center;justify-content:space-between"><span class="s-font-nav_item s-nav-dropdown-text">博客分类<!-- --> </span><i class="fa drop-down-icon-bold fas fa-chevron-right"></i></span></div><div id="nav-popover-panel" class="nav-dropdown-popover css-1i6s2rt"><div class="inner-content"><div class="panel-container s-variation-default s-custom-colors s-font-body-noto-sans-sc s-font-title-long-cang s-font-heading-yuanti s-font-button-raleway s-font-nav_item-yuanti s-font-nav_dropdown-noto-sans-sc s-font-weight-body-default s-font-weight-title-default s-font-weight-heading-default s-font-weight-300-button-raleway s-font-weight-nav_item-default s-font-weight-nav_dropdown-default" id="nav-dropdown-panel"><style id="font-style-tag-nav-dropdown-panel">
+    #nav-dropdown-panel.s-font-body-noto-sans-sc .s-font-body {
+      font-family: "noto sans sc", sans-serif;
+    }
+    #nav-dropdown-panel.s-font-body-noto-sans-sc .s-font-body:lang(ja) {
+      font-family: "noto sans sc", "ヒラギノ角ゴ Pro W3","Hiragino Kaku Gothic Pro",Osaka,"メイリオ",Meiryo,"ＭＳ Ｐゴシック","MS PGothic", sans-serif
+    }
+    #nav-dropdown-panel.s-font-body-noto-sans-sc .s-font-body:lang(zh-cn),
+    #nav-dropdown-panel.s-font-body-noto-sans-sc .s-font-body:lang(sxl),
+    #nav-dropdown-panel.s-font-body-noto-sans-sc .s-font-body:lang(zh) {
+      font-family: "noto sans sc", 'PingFang SC',"Microsoft YaHei","微软雅黑",STXihei,"华文细黑", sans-serif
+    }
+    #nav-dropdown-panel.s-font-body-noto-sans-sc .s-font-body:lang(zh-tw) {
+      font-family: "noto sans sc", 'Lisong Pro', 'PMingLiU', 'PingFang TC','Microsoft JhengHei',"微軟正黑體",STXihei, sans-serif;
+    }
+  
+    #nav-dropdown-panel.s-font-title-long-cang .s-font-title {
+      font-family: "long cang", cursive;
+    }
+    #nav-dropdown-panel.s-font-title-long-cang .s-font-title:lang(ja) {
+      font-family: "long cang", 'Kaiti SC', "ヒラギノ角ゴ Pro W3","Hiragino Kaku Gothic Pro",Osaka,"メイリオ",Meiryo,"ＭＳ Ｐゴシック","MS PGothic", cursive
+    }
+    #nav-dropdown-panel.s-font-title-long-cang .s-font-title:lang(zh-cn),
+    #nav-dropdown-panel.s-font-title-long-cang .s-font-title:lang(sxl),
+    #nav-dropdown-panel.s-font-title-long-cang .s-font-title:lang(zh) {
+      font-family: "long cang", 'Kaiti SC', TKaiTi, KaiTi, Kaiti_GB2312, "PingFang SC", "Microsoft YaHei", 微软雅黑, STXihei, 华文细黑, cursive
+    }
+    #nav-dropdown-panel.s-font-title-long-cang .s-font-title:lang(zh-tw) {
+      font-family: "long cang", 'Kaiti SC', 'PingFang TC','Microsoft JhengHei',"微軟正黑體",STXihei, cursive;
+    }
+  
+    #nav-dropdown-panel.s-font-heading-yuanti .s-font-heading {
+      font-family: "Calibri-light", "Calibri", "YouYuan", "Yuanti SC", "Microsoft YaHei", serif;
+    }
+    #nav-dropdown-panel.s-font-heading-yuanti .s-font-heading:lang(ja) {
+      font-family: "Calibri-light", "Calibri", "YouYuan", "Yuanti SC", "Microsoft YaHei", "ヒラギノ角ゴ Pro W3","Hiragino Kaku Gothic Pro",Osaka,"メイリオ",Meiryo,"ＭＳ Ｐゴシック","MS PGothic", serif
+    }
+    #nav-dropdown-panel.s-font-heading-yuanti .s-font-heading:lang(zh-cn),
+    #nav-dropdown-panel.s-font-heading-yuanti .s-font-heading:lang(sxl),
+    #nav-dropdown-panel.s-font-heading-yuanti .s-font-heading:lang(zh) {
+      font-family: "Calibri-light", "Calibri", "YouYuan", "Yuanti SC", "Microsoft YaHei", Cardo, STSong, "Songti SC", SimSun, "PingFang SC", "Microsoft YaHei", 微软雅黑, STXihei, 华文细黑, serif
+    }
+    #nav-dropdown-panel.s-font-heading-yuanti .s-font-heading:lang(zh-tw) {
+      font-family: "Calibri-light", "Calibri", "YouYuan", "Yuanti SC", "Microsoft YaHei", 'PingFang TC','Microsoft JhengHei',"微軟正黑體",STXihei, serif;
+    }
+  
+    #nav-dropdown-panel.s-font-button-raleway .s-font-button {
+      font-family: raleway, helvetica, sans-serif;
+    }
+    #nav-dropdown-panel.s-font-button-raleway .s-font-button:lang(ja) {
+      font-family: raleway, helvetica, "ヒラギノ角ゴ Pro W3","Hiragino Kaku Gothic Pro",Osaka,"メイリオ",Meiryo,"ＭＳ Ｐゴシック","MS PGothic", sans-serif
+    }
+    #nav-dropdown-panel.s-font-button-raleway .s-font-button:lang(zh-cn),
+    #nav-dropdown-panel.s-font-button-raleway .s-font-button:lang(sxl),
+    #nav-dropdown-panel.s-font-button-raleway .s-font-button:lang(zh) {
+      font-family: raleway, helvetica, 'PingFang SC',"Microsoft YaHei","微软雅黑",STXihei,"华文细黑", sans-serif
+    }
+    #nav-dropdown-panel.s-font-button-raleway .s-font-button:lang(zh-tw) {
+      font-family: raleway, helvetica, 'Lisong Pro', 'PMingLiU', 'PingFang TC','Microsoft JhengHei',"微軟正黑體",STXihei, sans-serif;
+    }
+  
+    #nav-dropdown-panel.s-font-nav_item-yuanti .s-font-navitem {
+      font-family: "Calibri-light", "Calibri", "YouYuan", "Yuanti SC", "Microsoft YaHei", serif;
+    }
+    #nav-dropdown-panel.s-font-nav_item-yuanti .s-font-navitem:lang(ja) {
+      font-family: "Calibri-light", "Calibri", "YouYuan", "Yuanti SC", "Microsoft YaHei", "ヒラギノ角ゴ Pro W3","Hiragino Kaku Gothic Pro",Osaka,"メイリオ",Meiryo,"ＭＳ Ｐゴシック","MS PGothic", serif
+    }
+    #nav-dropdown-panel.s-font-nav_item-yuanti .s-font-navitem:lang(zh-cn),
+    #nav-dropdown-panel.s-font-nav_item-yuanti .s-font-navitem:lang(sxl),
+    #nav-dropdown-panel.s-font-nav_item-yuanti .s-font-navitem:lang(zh) {
+      font-family: "Calibri-light", "Calibri", "YouYuan", "Yuanti SC", "Microsoft YaHei", Cardo, STSong, "Songti SC", SimSun, "PingFang SC", "Microsoft YaHei", 微软雅黑, STXihei, 华文细黑, serif
+    }
+    #nav-dropdown-panel.s-font-nav_item-yuanti .s-font-navitem:lang(zh-tw) {
+      font-family: "Calibri-light", "Calibri", "YouYuan", "Yuanti SC", "Microsoft YaHei", 'PingFang TC','Microsoft JhengHei',"微軟正黑體",STXihei, serif;
+    }
+  
+    #nav-dropdown-panel.s-font-nav_dropdown-noto-sans-sc .s-font-navdropdown {
+      font-family: "noto sans sc", sans-serif;
+    }
+    #nav-dropdown-panel.s-font-nav_dropdown-noto-sans-sc .s-font-navdropdown:lang(ja) {
+      font-family: "noto sans sc", "ヒラギノ角ゴ Pro W3","Hiragino Kaku Gothic Pro",Osaka,"メイリオ",Meiryo,"ＭＳ Ｐゴシック","MS PGothic", sans-serif
+    }
+    #nav-dropdown-panel.s-font-nav_dropdown-noto-sans-sc .s-font-navdropdown:lang(zh-cn),
+    #nav-dropdown-panel.s-font-nav_dropdown-noto-sans-sc .s-font-navdropdown:lang(sxl),
+    #nav-dropdown-panel.s-font-nav_dropdown-noto-sans-sc .s-font-navdropdown:lang(zh) {
+      font-family: "noto sans sc", 'PingFang SC',"Microsoft YaHei","微软雅黑",STXihei,"华文细黑", sans-serif
+    }
+    #nav-dropdown-panel.s-font-nav_dropdown-noto-sans-sc .s-font-navdropdown:lang(zh-tw) {
+      font-family: "noto sans sc", 'Lisong Pro', 'PMingLiU', 'PingFang TC','Microsoft JhengHei',"微軟正黑體",STXihei, sans-serif;
+    }
+  </style><div class="main-panel"><ul><li><a class="s-nav-dropdown-item" target="_self" href="/blog/categories"><span class="s-font-nav_dropdown s-nav-text">所有博客分类</span></a></li></ul></div></div></div></div></div></li></ul></li></ul></div></div></div></div><div class="s-navbar-desktop s-navbar-desktop-fixed strikingly-fixed s-bg-light-text s-new-layout topBar s-new-layout-a s-nav-spacing-compact s-nav-highlight-underline s-nav-drop-shadow-no s-nav-sticky-drop-shadow-default _alternativeNavBackgroundColorIsDifferentFromNormal overlaps-content has-new-layout has-image2 has-title s-nav-transparent-desktop"><div class="s-nav-inner nav-item-loaded"><div class="s-nav-inner-wrap"><div class="s-logo"><div class=" css-fisrrk css-ufxpkf0"><div class="s-logo-image-normal"><div class="s-logo-image image1"><div class="s-component s-image"><div><div class="s-component-content"><div class="s-img-wrapper"><img src="//user-assets.sxlcdn.com/images/1228338/Fh_pxdSEcnKcbiqfq6FMJ2AXCoy5.png?imageMogr2/strip/auto-orient/thumbnail/300x300&gt;/quality/90!/format/png" alt="broken image" title="" class="crop-default" data-description="" data-image-link="javascript:void(0);" width="300" height="300" style="width:auto;height:auto"/></div></div></div></div></div></div><div class="s-logo-image-alternative"><div class="s-logo-image image1"><div class="s-component s-image"><div><div class="s-component-content"><div class="s-img-wrapper"><img src="//user-assets.sxlcdn.com/images/1228338/Fh_pxdSEcnKcbiqfq6FMJ2AXCoy5.png?imageMogr2/strip/auto-orient/thumbnail/300x300&gt;/quality/90!/format/png" alt="broken image" title="" class="crop-default" data-description="" data-image-link="javascript:void(0);" width="300" height="300" style="width:auto;height:auto"/></div></div></div></div></div><div class="s-logo-image image2"><div class="s-component s-image"><div><div class="s-component-content"><div class="s-img-wrapper"><img src="//assets.strikingly.com/assets/themes/fresh/power.png" alt="broken image" title="" class="crop-default" data-description="" data-image-link="javascript:void(0);" width="300" height="300" style="width:auto;height:auto"/></div></div></div></div></div></div></div></div><div class="s-logo-title"><div class="s-component s-text"><div class=""><div class="s-component-content s-font-title" style="white-space:pre-wrap"><div class="s-rich-text-wrapper" style="display: block;"><p class=" s-rich-text-wrapper">死机工作室</p></div></div></div></div></div><div class="s-nav-items-and-links"><ul class="s-uncollapsed-nav"><li class="s-nav-li selected"><div class="s-nav-link-container"><a target="_self" href="/"><span class="s-font-nav_item s-nav-text">首页</span></a></div></li><li class="s-nav-li"><div class="s-nav-link-container"><a target="_self" href="/#_2"><span class="s-font-nav_item s-nav-text">自我介绍</span></a></div></li><li class="s-nav-li"><div class="s-nav-link-container"><a target="_self" href="/#_3"><span class="s-font-nav_item s-nav-text">公告</span></a></div></li><li class="s-nav-li"><div class="s-nav-link-container"><a target="_self" href="/#_4"><span class="s-font-nav_item s-nav-text">博客</span></a></div></li><li class="s-nav-li"><div class="s-nav-link-container"><a target="_self" href="/#_5"><span class="s-font-nav_item s-nav-text">资源站</span></a></div></li><li class="s-nav-li s-navbar-dropdown is-category-menu"><div class="s-nav-link-container located-dropdown-item" style="position:relative;pointer-events:auto"><div class="s-nav-link-container"><span class="s-nav-dropdown-item s-nav-item" style="display:flex;align-items:center;justify-content:space-between"><span class="s-font-nav_item s-nav-dropdown-text">博客分类<!-- --> </span><i class="fa drop-down-icon-bold fas fa-chevron-down"></i></span></div><div id="nav-popover-panel" class="nav-dropdown-popover css-1i6s2rt"><div class="inner-content"><div class="panel-container s-variation-default s-custom-colors s-font-body-noto-sans-sc s-font-title-long-cang s-font-heading-yuanti s-font-button-raleway s-font-nav_item-yuanti s-font-nav_dropdown-noto-sans-sc s-font-weight-body-default s-font-weight-title-default s-font-weight-heading-default s-font-weight-300-button-raleway s-font-weight-nav_item-default s-font-weight-nav_dropdown-default" id="nav-dropdown-panel"><style id="font-style-tag-nav-dropdown-panel">
+    #nav-dropdown-panel.s-font-body-noto-sans-sc .s-font-body {
+      font-family: "noto sans sc", sans-serif;
+    }
+    #nav-dropdown-panel.s-font-body-noto-sans-sc .s-font-body:lang(ja) {
+      font-family: "noto sans sc", "ヒラギノ角ゴ Pro W3","Hiragino Kaku Gothic Pro",Osaka,"メイリオ",Meiryo,"ＭＳ Ｐゴシック","MS PGothic", sans-serif
+    }
+    #nav-dropdown-panel.s-font-body-noto-sans-sc .s-font-body:lang(zh-cn),
+    #nav-dropdown-panel.s-font-body-noto-sans-sc .s-font-body:lang(sxl),
+    #nav-dropdown-panel.s-font-body-noto-sans-sc .s-font-body:lang(zh) {
+      font-family: "noto sans sc", 'PingFang SC',"Microsoft YaHei","微软雅黑",STXihei,"华文细黑", sans-serif
+    }
+    #nav-dropdown-panel.s-font-body-noto-sans-sc .s-font-body:lang(zh-tw) {
+      font-family: "noto sans sc", 'Lisong Pro', 'PMingLiU', 'PingFang TC','Microsoft JhengHei',"微軟正黑體",STXihei, sans-serif;
+    }
+  
+    #nav-dropdown-panel.s-font-title-long-cang .s-font-title {
+      font-family: "long cang", cursive;
+    }
+    #nav-dropdown-panel.s-font-title-long-cang .s-font-title:lang(ja) {
+      font-family: "long cang", 'Kaiti SC', "ヒラギノ角ゴ Pro W3","Hiragino Kaku Gothic Pro",Osaka,"メイリオ",Meiryo,"ＭＳ Ｐゴシック","MS PGothic", cursive
+    }
+    #nav-dropdown-panel.s-font-title-long-cang .s-font-title:lang(zh-cn),
+    #nav-dropdown-panel.s-font-title-long-cang .s-font-title:lang(sxl),
+    #nav-dropdown-panel.s-font-title-long-cang .s-font-title:lang(zh) {
+      font-family: "long cang", 'Kaiti SC', TKaiTi, KaiTi, Kaiti_GB2312, "PingFang SC", "Microsoft YaHei", 微软雅黑, STXihei, 华文细黑, cursive
+    }
+    #nav-dropdown-panel.s-font-title-long-cang .s-font-title:lang(zh-tw) {
+      font-family: "long cang", 'Kaiti SC', 'PingFang TC','Microsoft JhengHei',"微軟正黑體",STXihei, cursive;
+    }
+  
+    #nav-dropdown-panel.s-font-heading-yuanti .s-font-heading {
+      font-family: "Calibri-light", "Calibri", "YouYuan", "Yuanti SC", "Microsoft YaHei", serif;
+    }
+    #nav-dropdown-panel.s-font-heading-yuanti .s-font-heading:lang(ja) {
+      font-family: "Calibri-light", "Calibri", "YouYuan", "Yuanti SC", "Microsoft YaHei", "ヒラギノ角ゴ Pro W3","Hiragino Kaku Gothic Pro",Osaka,"メイリオ",Meiryo,"ＭＳ Ｐゴシック","MS PGothic", serif
+    }
+    #nav-dropdown-panel.s-font-heading-yuanti .s-font-heading:lang(zh-cn),
+    #nav-dropdown-panel.s-font-heading-yuanti .s-font-heading:lang(sxl),
+    #nav-dropdown-panel.s-font-heading-yuanti .s-font-heading:lang(zh) {
+      font-family: "Calibri-light", "Calibri", "YouYuan", "Yuanti SC", "Microsoft YaHei", Cardo, STSong, "Songti SC", SimSun, "PingFang SC", "Microsoft YaHei", 微软雅黑, STXihei, 华文细黑, serif
+    }
+    #nav-dropdown-panel.s-font-heading-yuanti .s-font-heading:lang(zh-tw) {
+      font-family: "Calibri-light", "Calibri", "YouYuan", "Yuanti SC", "Microsoft YaHei", 'PingFang TC','Microsoft JhengHei',"微軟正黑體",STXihei, serif;
+    }
+  
+    #nav-dropdown-panel.s-font-button-raleway .s-font-button {
+      font-family: raleway, helvetica, sans-serif;
+    }
+    #nav-dropdown-panel.s-font-button-raleway .s-font-button:lang(ja) {
+      font-family: raleway, helvetica, "ヒラギノ角ゴ Pro W3","Hiragino Kaku Gothic Pro",Osaka,"メイリオ",Meiryo,"ＭＳ Ｐゴシック","MS PGothic", sans-serif
+    }
+    #nav-dropdown-panel.s-font-button-raleway .s-font-button:lang(zh-cn),
+    #nav-dropdown-panel.s-font-button-raleway .s-font-button:lang(sxl),
+    #nav-dropdown-panel.s-font-button-raleway .s-font-button:lang(zh) {
+      font-family: raleway, helvetica, 'PingFang SC',"Microsoft YaHei","微软雅黑",STXihei,"华文细黑", sans-serif
+    }
+    #nav-dropdown-panel.s-font-button-raleway .s-font-button:lang(zh-tw) {
+      font-family: raleway, helvetica, 'Lisong Pro', 'PMingLiU', 'PingFang TC','Microsoft JhengHei',"微軟正黑體",STXihei, sans-serif;
+    }
+  
+    #nav-dropdown-panel.s-font-nav_item-yuanti .s-font-navitem {
+      font-family: "Calibri-light", "Calibri", "YouYuan", "Yuanti SC", "Microsoft YaHei", serif;
+    }
+    #nav-dropdown-panel.s-font-nav_item-yuanti .s-font-navitem:lang(ja) {
+      font-family: "Calibri-light", "Calibri", "YouYuan", "Yuanti SC", "Microsoft YaHei", "ヒラギノ角ゴ Pro W3","Hiragino Kaku Gothic Pro",Osaka,"メイリオ",Meiryo,"ＭＳ Ｐゴシック","MS PGothic", serif
+    }
+    #nav-dropdown-panel.s-font-nav_item-yuanti .s-font-navitem:lang(zh-cn),
+    #nav-dropdown-panel.s-font-nav_item-yuanti .s-font-navitem:lang(sxl),
+    #nav-dropdown-panel.s-font-nav_item-yuanti .s-font-navitem:lang(zh) {
+      font-family: "Calibri-light", "Calibri", "YouYuan", "Yuanti SC", "Microsoft YaHei", Cardo, STSong, "Songti SC", SimSun, "PingFang SC", "Microsoft YaHei", 微软雅黑, STXihei, 华文细黑, serif
+    }
+    #nav-dropdown-panel.s-font-nav_item-yuanti .s-font-navitem:lang(zh-tw) {
+      font-family: "Calibri-light", "Calibri", "YouYuan", "Yuanti SC", "Microsoft YaHei", 'PingFang TC','Microsoft JhengHei',"微軟正黑體",STXihei, serif;
+    }
+  
+    #nav-dropdown-panel.s-font-nav_dropdown-noto-sans-sc .s-font-navdropdown {
+      font-family: "noto sans sc", sans-serif;
+    }
+    #nav-dropdown-panel.s-font-nav_dropdown-noto-sans-sc .s-font-navdropdown:lang(ja) {
+      font-family: "noto sans sc", "ヒラギノ角ゴ Pro W3","Hiragino Kaku Gothic Pro",Osaka,"メイリオ",Meiryo,"ＭＳ Ｐゴシック","MS PGothic", sans-serif
+    }
+    #nav-dropdown-panel.s-font-nav_dropdown-noto-sans-sc .s-font-navdropdown:lang(zh-cn),
+    #nav-dropdown-panel.s-font-nav_dropdown-noto-sans-sc .s-font-navdropdown:lang(sxl),
+    #nav-dropdown-panel.s-font-nav_dropdown-noto-sans-sc .s-font-navdropdown:lang(zh) {
+      font-family: "noto sans sc", 'PingFang SC',"Microsoft YaHei","微软雅黑",STXihei,"华文细黑", sans-serif
+    }
+    #nav-dropdown-panel.s-font-nav_dropdown-noto-sans-sc .s-font-navdropdown:lang(zh-tw) {
+      font-family: "noto sans sc", 'Lisong Pro', 'PMingLiU', 'PingFang TC','Microsoft JhengHei',"微軟正黑體",STXihei, sans-serif;
+    }
+  </style><div class="main-panel"><ul><li><a class="s-nav-dropdown-item" target="_self" href="/blog/categories"><span class="s-font-nav_dropdown s-nav-text">所有博客分类</span></a></li></ul></div></div></div></div></div></li><li class="s-nav-li s-nav-ellipsis hidden s-navbar-dropdown _down"><div class="s-nav-link-container"><span class="s5-inline-switch"><span class="s-font-body s-nav-dropdown-text" style="display:flex;align-items:center">… <!-- --> <i style="display:inline" class="fa drop-down-icon-bold fas fa-chevron-down"></i></span></span></div><ul class="s-collapsed-nav"><li class="s-nav-li selected"><div class="s-nav-link-container"><a target="_self" href="/"><span class="s-font-nav_item s-nav-text">首页</span></a></div></li><li class="s-nav-li"><div class="s-nav-link-container"><a target="_self" href="/#_2"><span class="s-font-nav_item s-nav-text">自我介绍</span></a></div></li><li class="s-nav-li"><div class="s-nav-link-container"><a target="_self" href="/#_3"><span class="s-font-nav_item s-nav-text">公告</span></a></div></li><li class="s-nav-li"><div class="s-nav-link-container"><a target="_self" href="/#_4"><span class="s-font-nav_item s-nav-text">博客</span></a></div></li><li class="s-nav-li"><div class="s-nav-link-container"><a target="_self" href="/#_5"><span class="s-font-nav_item s-nav-text">资源站</span></a></div></li><li class="s-nav-li s-navbar-dropdown is-category-menu"><div class="s-nav-link-container located-dropdown-item" style="position:relative;pointer-events:auto"><div class="s-nav-link-container"><span class="s-nav-dropdown-item s-nav-item" style="display:flex;align-items:center;justify-content:space-between"><span class="s-font-nav_item s-nav-dropdown-text">博客分类<!-- --> </span><i class="fa drop-down-icon-bold fas fa-chevron-right"></i></span></div><div id="nav-popover-panel" class="nav-dropdown-popover css-1i6s2rt"><div class="inner-content"><div class="panel-container s-variation-default s-custom-colors s-font-body-noto-sans-sc s-font-title-long-cang s-font-heading-yuanti s-font-button-raleway s-font-nav_item-yuanti s-font-nav_dropdown-noto-sans-sc s-font-weight-body-default s-font-weight-title-default s-font-weight-heading-default s-font-weight-300-button-raleway s-font-weight-nav_item-default s-font-weight-nav_dropdown-default" id="nav-dropdown-panel"><style id="font-style-tag-nav-dropdown-panel">
+    #nav-dropdown-panel.s-font-body-noto-sans-sc .s-font-body {
+      font-family: "noto sans sc", sans-serif;
+    }
+    #nav-dropdown-panel.s-font-body-noto-sans-sc .s-font-body:lang(ja) {
+      font-family: "noto sans sc", "ヒラギノ角ゴ Pro W3","Hiragino Kaku Gothic Pro",Osaka,"メイリオ",Meiryo,"ＭＳ Ｐゴシック","MS PGothic", sans-serif
+    }
+    #nav-dropdown-panel.s-font-body-noto-sans-sc .s-font-body:lang(zh-cn),
+    #nav-dropdown-panel.s-font-body-noto-sans-sc .s-font-body:lang(sxl),
+    #nav-dropdown-panel.s-font-body-noto-sans-sc .s-font-body:lang(zh) {
+      font-family: "noto sans sc", 'PingFang SC',"Microsoft YaHei","微软雅黑",STXihei,"华文细黑", sans-serif
+    }
+    #nav-dropdown-panel.s-font-body-noto-sans-sc .s-font-body:lang(zh-tw) {
+      font-family: "noto sans sc", 'Lisong Pro', 'PMingLiU', 'PingFang TC','Microsoft JhengHei',"微軟正黑體",STXihei, sans-serif;
+    }
+  
+    #nav-dropdown-panel.s-font-title-long-cang .s-font-title {
+      font-family: "long cang", cursive;
+    }
+    #nav-dropdown-panel.s-font-title-long-cang .s-font-title:lang(ja) {
+      font-family: "long cang", 'Kaiti SC', "ヒラギノ角ゴ Pro W3","Hiragino Kaku Gothic Pro",Osaka,"メイリオ",Meiryo,"ＭＳ Ｐゴシック","MS PGothic", cursive
+    }
+    #nav-dropdown-panel.s-font-title-long-cang .s-font-title:lang(zh-cn),
+    #nav-dropdown-panel.s-font-title-long-cang .s-font-title:lang(sxl),
+    #nav-dropdown-panel.s-font-title-long-cang .s-font-title:lang(zh) {
+      font-family: "long cang", 'Kaiti SC', TKaiTi, KaiTi, Kaiti_GB2312, "PingFang SC", "Microsoft YaHei", 微软雅黑, STXihei, 华文细黑, cursive
+    }
+    #nav-dropdown-panel.s-font-title-long-cang .s-font-title:lang(zh-tw) {
+      font-family: "long cang", 'Kaiti SC', 'PingFang TC','Microsoft JhengHei',"微軟正黑體",STXihei, cursive;
+    }
+  
+    #nav-dropdown-panel.s-font-heading-yuanti .s-font-heading {
+      font-family: "Calibri-light", "Calibri", "YouYuan", "Yuanti SC", "Microsoft YaHei", serif;
+    }
+    #nav-dropdown-panel.s-font-heading-yuanti .s-font-heading:lang(ja) {
+      font-family: "Calibri-light", "Calibri", "YouYuan", "Yuanti SC", "Microsoft YaHei", "ヒラギノ角ゴ Pro W3","Hiragino Kaku Gothic Pro",Osaka,"メイリオ",Meiryo,"ＭＳ Ｐゴシック","MS PGothic", serif
+    }
+    #nav-dropdown-panel.s-font-heading-yuanti .s-font-heading:lang(zh-cn),
+    #nav-dropdown-panel.s-font-heading-yuanti .s-font-heading:lang(sxl),
+    #nav-dropdown-panel.s-font-heading-yuanti .s-font-heading:lang(zh) {
+      font-family: "Calibri-light", "Calibri", "YouYuan", "Yuanti SC", "Microsoft YaHei", Cardo, STSong, "Songti SC", SimSun, "PingFang SC", "Microsoft YaHei", 微软雅黑, STXihei, 华文细黑, serif
+    }
+    #nav-dropdown-panel.s-font-heading-yuanti .s-font-heading:lang(zh-tw) {
+      font-family: "Calibri-light", "Calibri", "YouYuan", "Yuanti SC", "Microsoft YaHei", 'PingFang TC','Microsoft JhengHei',"微軟正黑體",STXihei, serif;
+    }
+  
+    #nav-dropdown-panel.s-font-button-raleway .s-font-button {
+      font-family: raleway, helvetica, sans-serif;
+    }
+    #nav-dropdown-panel.s-font-button-raleway .s-font-button:lang(ja) {
+      font-family: raleway, helvetica, "ヒラギノ角ゴ Pro W3","Hiragino Kaku Gothic Pro",Osaka,"メイリオ",Meiryo,"ＭＳ Ｐゴシック","MS PGothic", sans-serif
+    }
+    #nav-dropdown-panel.s-font-button-raleway .s-font-button:lang(zh-cn),
+    #nav-dropdown-panel.s-font-button-raleway .s-font-button:lang(sxl),
+    #nav-dropdown-panel.s-font-button-raleway .s-font-button:lang(zh) {
+      font-family: raleway, helvetica, 'PingFang SC',"Microsoft YaHei","微软雅黑",STXihei,"华文细黑", sans-serif
+    }
+    #nav-dropdown-panel.s-font-button-raleway .s-font-button:lang(zh-tw) {
+      font-family: raleway, helvetica, 'Lisong Pro', 'PMingLiU', 'PingFang TC','Microsoft JhengHei',"微軟正黑體",STXihei, sans-serif;
+    }
+  
+    #nav-dropdown-panel.s-font-nav_item-yuanti .s-font-navitem {
+      font-family: "Calibri-light", "Calibri", "YouYuan", "Yuanti SC", "Microsoft YaHei", serif;
+    }
+    #nav-dropdown-panel.s-font-nav_item-yuanti .s-font-navitem:lang(ja) {
+      font-family: "Calibri-light", "Calibri", "YouYuan", "Yuanti SC", "Microsoft YaHei", "ヒラギノ角ゴ Pro W3","Hiragino Kaku Gothic Pro",Osaka,"メイリオ",Meiryo,"ＭＳ Ｐゴシック","MS PGothic", serif
+    }
+    #nav-dropdown-panel.s-font-nav_item-yuanti .s-font-navitem:lang(zh-cn),
+    #nav-dropdown-panel.s-font-nav_item-yuanti .s-font-navitem:lang(sxl),
+    #nav-dropdown-panel.s-font-nav_item-yuanti .s-font-navitem:lang(zh) {
+      font-family: "Calibri-light", "Calibri", "YouYuan", "Yuanti SC", "Microsoft YaHei", Cardo, STSong, "Songti SC", SimSun, "PingFang SC", "Microsoft YaHei", 微软雅黑, STXihei, 华文细黑, serif
+    }
+    #nav-dropdown-panel.s-font-nav_item-yuanti .s-font-navitem:lang(zh-tw) {
+      font-family: "Calibri-light", "Calibri", "YouYuan", "Yuanti SC", "Microsoft YaHei", 'PingFang TC','Microsoft JhengHei',"微軟正黑體",STXihei, serif;
+    }
+  
+    #nav-dropdown-panel.s-font-nav_dropdown-noto-sans-sc .s-font-navdropdown {
+      font-family: "noto sans sc", sans-serif;
+    }
+    #nav-dropdown-panel.s-font-nav_dropdown-noto-sans-sc .s-font-navdropdown:lang(ja) {
+      font-family: "noto sans sc", "ヒラギノ角ゴ Pro W3","Hiragino Kaku Gothic Pro",Osaka,"メイリオ",Meiryo,"ＭＳ Ｐゴシック","MS PGothic", sans-serif
+    }
+    #nav-dropdown-panel.s-font-nav_dropdown-noto-sans-sc .s-font-navdropdown:lang(zh-cn),
+    #nav-dropdown-panel.s-font-nav_dropdown-noto-sans-sc .s-font-navdropdown:lang(sxl),
+    #nav-dropdown-panel.s-font-nav_dropdown-noto-sans-sc .s-font-navdropdown:lang(zh) {
+      font-family: "noto sans sc", 'PingFang SC',"Microsoft YaHei","微软雅黑",STXihei,"华文细黑", sans-serif
+    }
+    #nav-dropdown-panel.s-font-nav_dropdown-noto-sans-sc .s-font-navdropdown:lang(zh-tw) {
+      font-family: "noto sans sc", 'Lisong Pro', 'PMingLiU', 'PingFang TC','Microsoft JhengHei',"微軟正黑體",STXihei, sans-serif;
+    }
+  </style><div class="main-panel"><ul><li><a class="s-nav-dropdown-item" target="_self" href="/blog/categories"><span class="s-font-nav_dropdown s-nav-text">所有博客分类</span></a></li></ul></div></div></div></div></div></li></ul></li></ul></div></div></div></div><div class="s-navbar-mobile-header"><div class="s-logo-image image1"><div class="s-component s-image"><div><div class="s-component-content"><div class="s-img-wrapper"><img src="//user-assets.sxlcdn.com/images/1228338/Fh_pxdSEcnKcbiqfq6FMJ2AXCoy5.png?imageMogr2/strip/auto-orient/thumbnail/300x300&gt;/quality/90!/format/png" alt="broken image" title="" class="crop-default" data-description="" data-image-link="javascript:void(0);" width="300" height="300" style="width:auto;height:auto"/></div></div></div></div></div></div></div><style data-emotion="css ojbfv9">.css-ojbfv9{font-size:15px;--s-pre-color0:#0e0b0b;--s-pre-color1:#443636;--s-pre-color2:#7d6464;--s-pre-color3:#ad9999;--s-pre-color4:#dbd2d2;--s-pre-color5:#0e0b0b;--s-pre-color6:#443636;--s-pre-color7:#7d6464;--s-pre-color8:#ad9999;--s-pre-color9:#dbd2d2;--s-pre-color10:#ffffff;--s-pre-color11:#555555;--s-pre-color12:#000000;--s-pre-color13:#816354;--s-pre-color14:#ff4d4d;--s-pre-color15:#ffa64d;--s-pre-color16:#9cce06;--s-pre-color17:#26c9ff;}.css-ojbfv9 .s-section:not(.s-grid-section):not(.s-store-section) .container{z-index:4;}.css-ojbfv9 .s-section:not(.s-slider-section) .container{width:1000px;}.css-ojbfv9 .s-section.s-slider-section .container{width:1000px;}.css-ojbfv9 .s-email-form .s-email-form-fields-group .s-email-form-field input[type='text'],.css-ojbfv9 .s-signup-form .s-email-form-fields-group .s-email-form-field input[type='text'],.css-ojbfv9 .s-email-form .s-email-form-fields-group .s-email-form-field textarea,.css-ojbfv9 .s-signup-form .s-email-form-fields-group .s-email-form-field textarea{border-radius:4px;}#s-content .css-ojbfv9 h1,.css-ojbfv9#s-use-site-style-config-container h1,.css-ojbfv9 #cro-section-selector-container .s-section-selector-group h1,#s-content .css-ojbfv9 h2,.css-ojbfv9#s-use-site-style-config-container h2,.css-ojbfv9 #cro-section-selector-container .s-section-selector-group h2{font-size:36px;}false #s-content .css-ojbfv9 h1,false .css-ojbfv9#s-use-site-style-config-container h1,false .css-ojbfv9 #cro-section-selector-container .s-section-selector-group h1,false #s-content .css-ojbfv9 h2,false .css-ojbfv9#s-use-site-style-config-container h2,false .css-ojbfv9 #cro-section-selector-container .s-section-selector-group h2,#s-content .css-ojbfv9 h1 p,.css-ojbfv9#s-use-site-style-config-container h1 p,.css-ojbfv9 #cro-section-selector-container .s-section-selector-group h1 p,#s-content .css-ojbfv9 h2 p,.css-ojbfv9#s-use-site-style-config-container h2 p,.css-ojbfv9 #cro-section-selector-container .s-section-selector-group h2 p,#s-content .css-ojbfv9 h1 span,.css-ojbfv9#s-use-site-style-config-container h1 span,.css-ojbfv9 #cro-section-selector-container .s-section-selector-group h1 span,#s-content .css-ojbfv9 h2 span,.css-ojbfv9#s-use-site-style-config-container h2 span,.css-ojbfv9 #cro-section-selector-container .s-section-selector-group h2 span{line-height:1.4;}#s-content .css-ojbfv9 h4,.css-ojbfv9#s-use-site-style-config-container h4,.css-ojbfv9 #cro-section-selector-container .s-section-selector-group h4{font-size:16px;}false #s-content .css-ojbfv9 h4,false .css-ojbfv9#s-use-site-style-config-container h4,false .css-ojbfv9 #cro-section-selector-container .s-section-selector-group h4,#s-content .css-ojbfv9 h4 p,.css-ojbfv9#s-use-site-style-config-container h4 p,.css-ojbfv9 #cro-section-selector-container .s-section-selector-group h4 p,#s-content .css-ojbfv9 h4 span,.css-ojbfv9#s-use-site-style-config-container h4 span,.css-ojbfv9 #cro-section-selector-container .s-section-selector-group h4 span{line-height:undefined;}#s-content .css-ojbfv9 h3,.css-ojbfv9#s-use-site-style-config-container h3,.css-ojbfv9 #cro-section-selector-container .s-section-selector-group h3,#s-content .css-ojbfv9 .s-blog-title,.css-ojbfv9#s-use-site-style-config-container .s-blog-title,.css-ojbfv9 #cro-section-selector-container .s-section-selector-group .s-blog-title,#s-content .css-ojbfv9 .s-ecommerce-card-view-card-name,.css-ojbfv9#s-use-site-style-config-container .s-ecommerce-card-view-card-name,.css-ojbfv9 #cro-section-selector-container .s-section-selector-group .s-ecommerce-card-view-card-name{font-size:18px;}false #s-content .css-ojbfv9 h3,false .css-ojbfv9#s-use-site-style-config-container h3,false .css-ojbfv9 #cro-section-selector-container .s-section-selector-group h3,false #s-content .css-ojbfv9 .s-blog-title,false .css-ojbfv9#s-use-site-style-config-container .s-blog-title,false .css-ojbfv9 #cro-section-selector-container .s-section-selector-group .s-blog-title,false #s-content .css-ojbfv9 .s-ecommerce-card-view-card-name,false .css-ojbfv9#s-use-site-style-config-container .s-ecommerce-card-view-card-name,false .css-ojbfv9 #cro-section-selector-container .s-section-selector-group .s-ecommerce-card-view-card-name,#s-content .css-ojbfv9 h3 p,.css-ojbfv9#s-use-site-style-config-container h3 p,.css-ojbfv9 #cro-section-selector-container .s-section-selector-group h3 p,#s-content .css-ojbfv9 .s-blog-title p,.css-ojbfv9#s-use-site-style-config-container .s-blog-title p,.css-ojbfv9 #cro-section-selector-container .s-section-selector-group .s-blog-title p,#s-content .css-ojbfv9 .s-ecommerce-card-view-card-name p,.css-ojbfv9#s-use-site-style-config-container .s-ecommerce-card-view-card-name p,.css-ojbfv9 #cro-section-selector-container .s-section-selector-group .s-ecommerce-card-view-card-name p,#s-content .css-ojbfv9 h3 span,.css-ojbfv9#s-use-site-style-config-container h3 span,.css-ojbfv9 #cro-section-selector-container .s-section-selector-group h3 span,#s-content .css-ojbfv9 .s-blog-title span,.css-ojbfv9#s-use-site-style-config-container .s-blog-title span,.css-ojbfv9 #cro-section-selector-container .s-section-selector-group .s-blog-title span,#s-content .css-ojbfv9 .s-ecommerce-card-view-card-name span,.css-ojbfv9#s-use-site-style-config-container .s-ecommerce-card-view-card-name span,.css-ojbfv9 #cro-section-selector-container .s-section-selector-group .s-ecommerce-card-view-card-name span{line-height:undefined;}#s-content .css-ojbfv9 h6,.css-ojbfv9#s-use-site-style-config-container h6,.css-ojbfv9 #cro-section-selector-container .s-section-selector-group h6,#s-content .css-ojbfv9 .s-blog-info,.css-ojbfv9#s-use-site-style-config-container .s-blog-info,.css-ojbfv9 #cro-section-selector-container .s-section-selector-group .s-blog-info,#s-content .css-ojbfv9 .s-ecommerce-card-view-card-price,.css-ojbfv9#s-use-site-style-config-container .s-ecommerce-card-view-card-price,.css-ojbfv9 #cro-section-selector-container .s-section-selector-group .s-ecommerce-card-view-card-price{font-size:18px;}false #s-content .css-ojbfv9 h6,false .css-ojbfv9#s-use-site-style-config-container h6,false .css-ojbfv9 #cro-section-selector-container .s-section-selector-group h6,false #s-content .css-ojbfv9 .s-blog-info,false .css-ojbfv9#s-use-site-style-config-container .s-blog-info,false .css-ojbfv9 #cro-section-selector-container .s-section-selector-group .s-blog-info,false #s-content .css-ojbfv9 .s-ecommerce-card-view-card-price,false .css-ojbfv9#s-use-site-style-config-container .s-ecommerce-card-view-card-price,false .css-ojbfv9 #cro-section-selector-container .s-section-selector-group .s-ecommerce-card-view-card-price,#s-content .css-ojbfv9 h6 p,.css-ojbfv9#s-use-site-style-config-container h6 p,.css-ojbfv9 #cro-section-selector-container .s-section-selector-group h6 p,#s-content .css-ojbfv9 .s-blog-info p,.css-ojbfv9#s-use-site-style-config-container .s-blog-info p,.css-ojbfv9 #cro-section-selector-container .s-section-selector-group .s-blog-info p,#s-content .css-ojbfv9 .s-ecommerce-card-view-card-price p,.css-ojbfv9#s-use-site-style-config-container .s-ecommerce-card-view-card-price p,.css-ojbfv9 #cro-section-selector-container .s-section-selector-group .s-ecommerce-card-view-card-price p,#s-content .css-ojbfv9 h6 span,.css-ojbfv9#s-use-site-style-config-container h6 span,.css-ojbfv9 #cro-section-selector-container .s-section-selector-group h6 span,#s-content .css-ojbfv9 .s-blog-info span,.css-ojbfv9#s-use-site-style-config-container .s-blog-info span,.css-ojbfv9 #cro-section-selector-container .s-section-selector-group .s-blog-info span,#s-content .css-ojbfv9 .s-ecommerce-card-view-card-price span,.css-ojbfv9#s-use-site-style-config-container .s-ecommerce-card-view-card-price span,.css-ojbfv9 #cro-section-selector-container .s-section-selector-group .s-ecommerce-card-view-card-price span{line-height:undefined;}.css-ojbfv9 h6,.css-ojbfv9 .s-section,.css-ojbfv9 .s-contact-info-form .s-contact-info-item,.css-ojbfv9 .s-blog .s-blog-details-blurb,.css-ojbfv9 .s-footer-section .s-footer-text,.css-ojbfv9 .s-item-text{font-size:15px;}.css-ojbfv9 .s-footer-section.s-bg-dark:not(.new-text-color-logic) .s-footer-text{color:#fff;}.css-ojbfv9 .navbar-drawer-bar .mobile,.css-ojbfv9 .navbar-drawer-bar .navbar{box-shadow:none;}.css-ojbfv9 .navbar-drawer-bar:not(.drawer-open) .navbar{background:#fff;border-radius:4px;}.css-ojbfv9 .navbar-drawer-bar:not(.drawer-open) .navbar .navbar-icons span{background-color:#0a0808;}.css-ojbfv9 .navbar-drawer-bar:not(.drawer-open) .mobile-cart-icon .navbar-cart{background:#fff;border-radius:4px;}.css-ojbfv9 .navbar-drawer-bar:not(.drawer-open) .mobile-cart-icon .navbar-cart i.fa-shopping-cart{color:#0a0808;}.css-ojbfv9 .navbar-drawer-bar.drawer-open .navbar .navbar-icons span{background-color:#0a0808;}.css-ojbfv9 .navbar-drawer-bar.drawer-open .mobile-cart-icon .navbar-cart i.fa-shopping-cart{color:#0a0808;}.css-ojbfv9 .s-title{color:#1D2023;}.css-ojbfv9 .s-subtitle{color:#0a0808;}.css-ojbfv9 .s-item-title,.css-ojbfv9 .s-ecommerce-card-view-card-name{color:#1D2023;}.css-ojbfv9 .s-item-subtitle,.css-ojbfv9 .s-page-product .s-section .s-ecommerce .s-ecommerce-row-view-product .s-ecommerce-row-view-product-detail-panel .s-ecommerce-row-view-product-pricing,.css-ojbfv9 .slides .s-ecommerce-card-view-wrapper .s-ecommerce-card-view-cards .s-ecommerce-card-view-card .s-ecommerce-card-view-card-price,.css-ojbfv9 .s-section-selector-group .s-ecommerce-card-view-card-price,.css-ojbfv9 .s-blog-info{color:#0a0808;}.css-ojbfv9 .s-item-text,.css-ojbfv9 .s-footer-text,.css-ojbfv9 .s-blog-details-blurb{color:#0e0b0b;}</style><div class="css-ojbfv9 css-19wxzq60"><div class="page-wrapper"><div id="prerendered-inline-theme-html"></div><ul style="display:block" class="slides s-page-1  remain-new-text-color-logic"><li class="slide s-section-1 s-first-visible-section css-1khdgcw s-s6-wrapper css-6h3hcl" id="section-f_aecf5e2a-c55a-4123-a63a-15809bcd4204"><div class="waypoint"></div><div class="section-anchor"></div><div><div class="lazyload s-section s6-section   s-bg-image s-bg-blurred s-bg-light-text  s-block-section background-image" style="background-repeat:repeat;background-size:unset;background-color:#855353;background-position:50% 50%;background-image:url(https://uploads.sxlcdn.com/static/backgrounds/patterns/21.jpg)" data-bg="https://uploads.sxlcdn.com/static/backgrounds/patterns/21.jpg" data-react-style="{&quot;backgroundRepeat&quot;:&quot;repeat&quot;,&quot;backgroundSize&quot;:&quot;unset&quot;,&quot;backgroundColor&quot;:&quot;#855353&quot;,&quot;backgroundPosition&quot;:&quot;50% 50%&quot;}"><style data-emotion="css 1tnf9eu">.css-1tnf9eu{position:absolute;top:0;left:0;width:100%;height:100%;line-height:1;-webkit-backdrop-filter:blur(10px);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px);-webkit-transition:all ease-in 0.2s;transition:all ease-in 0.2s;}.css-1tnf9eu.loaded{-webkit-backdrop-filter:blur(0px);-webkit-backdrop-filter:blur(0px);backdrop-filter:blur(0px);visibility:hidden;}</style><div class="blurred-layer css-1tnf9eu css-1oh32810"></div><div class="container"><div><div id="f_5fa36d4a-5bc2-45c9-9cdd-d150b6d49513" class="s-row" position="0,0"><div class="s-row-content vertical-align-middle"><div id="c80907f8-d1f5-4c26-a78b-99fbcba62ab0" position="0,0,0" class="s-col col-6"><div class="col-list col-align-undefined"><div id="e35b0ba8-ddc4-4ad8-adcb-6117c7f76991" class="s-element-spacer" position="0,0,0,0"><div id="e35b0ba8-ddc4-4ad8-adcb-6117c7f76991" position="0,0,0,0" class="s-element" columnsSize="2" elementsSize="1"><div class="s-element-content"><div class="s-component s-block s-block-spacer "> <div><div><div class="s-block-item-inner clearfix" style="position:relative"><div class=""><div><div class="s-component s-spacer" style="height:40px"></div></div></div></div></div></div></div></div></div></div></div></div><div id="6e8e708a-8b36-4527-af55-419d7e82b645" position="0,0,1" class="s-col col-6"><div class="col-list col-align-undefined"><div id="7d2a25df-3acb-43bb-a830-241ff56ba05e" class="s-element-spacer" position="0,0,1,0"><div id="7d2a25df-3acb-43bb-a830-241ff56ba05e" position="0,0,1,0" class="s-element" columnsSize="2" elementsSize="1"><div class="s-element-content"><div class="s-component s-block s-block-spacer "> <div><div><div class="s-block-item-inner clearfix" style="position:relative"><div class=""><div><div class="s-component s-spacer" style="height:40px"></div></div></div></div></div></div></div></div></div></div></div></div></div></div><div id="f_57209c43-bbeb-487c-8cad-49ec4e52cdf9" class="s-row" position="0,1"><div class="s-row-content vertical-align-middle"><div id="9f01c2c5-ea13-4098-b2a1-958d769fc1be" position="0,1,0" class="s-col col-12"><div class="col-list col-align-null"><div id="f180a75a-81b5-49cf-a793-0972dbf390f1" class="s-element-blockcomponentitem" position="0,1,0,0"><div id="f180a75a-81b5-49cf-a793-0972dbf390f1" position="0,1,0,0" class="s-element" columnsSize="1" elementsSize="1"><div class="s-element-content"><div class="s-component s-block s-block-title s-block-blockcomponentitem "> <div><div><div class="s-block-item-inner clearfix" style="position:relative"><div class=""><div class="s-item-title"><div class="s-component s-text"><div class=""><div class="s-component-content s-font-heading" style="white-space:pre-wrap"><h3><div class="s-rich-text-wrapper" style="display: block;"><p>死机工作室官网</p></div></h3></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div><div id="f_04d860d0-1801-496c-b0ed-17d4af59032d" class="s-row" position="0,2"><div class="s-row-content vertical-align-middle"><div id="44ed17df-e3dc-4244-9d2e-b9ea9dcb2132" position="0,2,0" class="s-col col-12"><div class="col-list col-align-null"><div id="b2e9dc60-0e8f-497e-a247-1e5f2dea1559" class="s-element-spacer" position="0,2,0,0"><div id="b2e9dc60-0e8f-497e-a247-1e5f2dea1559" position="0,2,0,0" class="s-element" columnsSize="1" elementsSize="1"><div class="s-element-content"><div class="s-component s-block s-block-spacer "> <div><div><div class="s-block-item-inner clearfix" style="position:relative"><div class=""><div><div class="s-component s-spacer" style="height:40px"></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></li><li class="slide s-section-2 css-mpqikg s-s6-wrapper css-g6n6xt" id="section-f_7b7dc93b-d6fa-4f9f-9639-ef6361a9b4fc"><div class="waypoint"></div><div class="section-anchor"></div><div><div class="lazyload  s-section s6-section   s-no-bg  new-text-color-logic  s-block-section background-image" data-react-style="{}"><div class="container"><div><div id="f_08907f2b-11ab-44c7-960b-44c20a0c65ad" class="s-row" position="1,0"><div class="s-row-content "><div id="f_3ed3a28b-e225-46bf-9406-5dbd7c693d4b" position="1,0,0" class="s-col col-12"><div class="col-list col-align-null"><div id="f_6aec0a60-e2ae-44da-84a8-f4ba62e38926" class="s-element-blockcomponentitem" position="1,0,0,0"><div id="f_6aec0a60-e2ae-44da-84a8-f4ba62e38926" position="1,0,0,0" class="s-element" columnsSize="1" elementsSize="1"><div class="s-element-content"><div class="s-component s-block s-block-title s-block-blockcomponentitem "> <div><div><div class="s-block-item-inner clearfix" style="position:relative"><div class=""><div class="s-item-title"><div class="s-component s-text"><div class=""><div class="s-component-content s-font-heading" style="white-space:pre-wrap"><h3><div class="s-rich-text-wrapper" style="display: block;"><p class=" s-rich-text-wrapper">自我介绍</p><p class=" s-rich-text-wrapper"><span style="display: inline-block"></span></p><p class=" s-rich-text-wrapper">我的名字叫陈子祥，我是一个五年级的小学生，爱搞编程，电脑。最会的语言是Python，java,……，<span style="color: var(--s-pre-color17);">我的脾气不好，请多多关照</span></p></div></h3></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></li><li class="slide s-section-3 css-mpqikg s-s6-wrapper css-g6n6xt" id="section-f_67c1d7f0-ca3c-499d-8d35-76eaa82e5af8"><div class="waypoint"></div><div class="section-anchor"></div><div><div class="lazyload  s-section s6-section   s-no-bg  new-text-color-logic  s-block-section background-image" data-react-style="{}"><div class="container"><div><div id="f_33a64b3c-46d1-4c4d-816b-4ed06af752f6" class="s-row" position="2,0"><div class="s-row-content "><div id="f_bf8094ae-5c30-4a58-9f43-00622a0d213d" position="2,0,0" class="s-col col-12"><div class="col-list col-align-null"><div id="f_4f91907b-358a-486b-8b6a-e1e70aa32f36" class="s-element-blockcomponentitem" position="2,0,0,0"><div id="f_4f91907b-358a-486b-8b6a-e1e70aa32f36" position="2,0,0,0" class="s-element" columnsSize="1" elementsSize="1"><div class="s-element-content"><div class="s-component s-block s-block-title s-block-blockcomponentitem "> <div><div><div class="s-block-item-inner clearfix" style="position:relative"><div class=""><div class="s-item-title"><div class="s-component s-text"><div class=""><div class="s-component-content s-font-heading" style="white-space:pre-wrap"><div><div class="s-rich-text-wrapper" style="display: block;"><h2 class=" s-title s-font-title s-rich-text-wrapper">公告</h2></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div><div id="f_d6db7ad8-88f7-4519-9977-3ec73c4332a0" class="s-row" position="2,1"><div class="s-row-content "><div id="f_9f5f8e8e-5e1c-4a3b-ae4b-b3b4cda5325b" position="2,1,0" class="s-col col-12"><div class="col-list col-align-null"><div id="22cb7c9f-c44c-417b-a1ac-d10412f8fead" class="s-element-blockcomponentitem" position="2,1,0,0"><div id="22cb7c9f-c44c-417b-a1ac-d10412f8fead" position="2,1,0,0" class="s-element" columnsSize="1" elementsSize="3"><div class="s-element-content"><div class="s-component s-block s-block-title s-block-blockcomponentitem "> <div><div><div class="s-block-item-inner clearfix" style="position:relative"><div class=""><div class="s-item-title"><div class="s-component s-text"><div class=""><div class="s-component-content s-font-heading" style="white-space:pre-wrap"><h3><div class="s-rich-text-wrapper" style="display: block;"><p class=" s-rich-text-wrapper">有问题请加QQ群：<span style="color: #041e2a;">1033587051</span></p></div></h3></div></div></div></div></div></div></div></div></div></div></div></div><div id="f_b6f94629-1735-44f0-84ae-dc8bd6904248" class="s-element-blockcomponentitem" position="2,1,0,1"><div id="f_b6f94629-1735-44f0-84ae-dc8bd6904248" position="2,1,0,1" class="s-element" columnsSize="1" elementsSize="3"><div class="s-element-content"><div class="s-component s-block s-block-title s-block-blockcomponentitem "> <div><div><div class="s-block-item-inner clearfix" style="position:relative"><div class=""><div class="s-item-title"><div class="s-component s-text"><div class=""><div class="s-component-content s-font-heading" style="white-space:pre-wrap"><h3><div class="s-rich-text-wrapper" style="display: block;"><p class=" s-rich-text-wrapper">死机工作室正式成立!谢谢各位的支持.</p></div></h3></div></div></div></div></div></div></div></div></div></div></div></div><div id="f_923b4864-2099-4467-9854-655090e623fd" class="s-element-blockcomponentitem" position="2,1,0,2"><div id="f_923b4864-2099-4467-9854-655090e623fd" position="2,1,0,2" class="s-element" columnsSize="1" elementsSize="3"><div class="s-element-content"><div class="s-component s-block s-block-context s-block-blockcomponentitem "> <div><div><div class="s-block-item-inner clearfix" style="position:relative"><div class=""><div class="s-item-text"><div class="s-component s-text"><div class=""></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></li><li class="slide s-section-4 css-mpqikg " id="section-f_4c60b060-1d36-41f3-92bb-1cdcfb0618fd"><div class="waypoint"></div><div class="section-anchor"></div><style data-emotion="css 1uoapul">.css-1uoapul .s-blog{clear:both;}@media only screen and (max-width:727px){.css-1uoapul .s-blog-section.s-new-mobile-layout .s-blog-wrapper .s-blog-col-placeholder .s-blog-col-body .s-blog-posts .s-blog-entry.s-layout-columns.mobile-one-columns{width:98%;}.css-1uoapul .s-blog-section.s-new-mobile-layout .s-blog-wrapper .s-blog-col-placeholder .s-blog-col-body .s-blog-posts .s-blog-entry.s-layout-columns.mobile-two-columns{width:48%;}.css-1uoapul .s-blog-section.s-new-mobile-layout .s-blog-wrapper .s-blog-col-placeholder .s-blog-col-body .s-blog-posts .s-blog-entry.s-layout-columns.mobile-three-columns{width:31.33%;}.css-1uoapul .s-blog-section.s-new-mobile-layout .s-blog-wrapper .s-blog-col-placeholder .s-blog-col-body .s-blog-posts .s-blog-entry.s-layout-columns.mobile-four-columns{width:23%;}}.css-1uoapul .s-blog-wrapper .s-blog-col-placeholder{min-height:116px;position:relative;font-family:inherit;font-weight:inherit;font-size:16px;position:relative;}.css-1uoapul .s-blog-wrapper .s-blog-col-placeholder .s-blog-row{margin-bottom:6px;}.s-no-bg .css-1uoapul .s-blog-wrapper .s-blog-col-placeholder .s-blog-link{color:#007fff;}.s-no-bg .css-1uoapul .s-blog-wrapper .s-blog-col-placeholder .s-blog-link:hover{color:darken(#007fff,10%);}.s-no-bg .css-1uoapul .s-blog-wrapper .s-blog-col-placeholder .s-blog-link.s-blog-prev-link,.s-no-bg .css-1uoapul .s-blog-wrapper .s-blog-col-placeholder .s-blog-link.s-blog-next-link,.s-no-bg .css-1uoapul .s-blog-wrapper .s-blog-col-placeholder .s-blog-link.s-blog-pagination-page{color:#777;}.s-no-bg .css-1uoapul .s-blog-wrapper .s-blog-col-placeholder .s-blog-link.s-blog-prev-link:hover,.s-no-bg .css-1uoapul .s-blog-wrapper .s-blog-col-placeholder .s-blog-link.s-blog-next-link:hover,.s-no-bg .css-1uoapul .s-blog-wrapper .s-blog-col-placeholder .s-blog-link.s-blog-pagination-page:hover{color:darken(#777,10%);}.css-1uoapul .s-blog-wrapper .s-blog-col-placeholder ul.s-blog-pagination{display:inline;}.css-1uoapul .s-blog-wrapper .s-blog-col-placeholder ul.s-blog-pagination li{display:inline;}.css-1uoapul .s-blog-wrapper .s-blog-col-placeholder ul.s-blog-pagination li a.s-blog-pagination-page.active{-webkit-text-decoration:underline;text-decoration:underline;}.css-1uoapul .s-blog-wrapper .s-blog-col-placeholder .s-blog-col-body{min-height:100px;}.css-1uoapul .s-blog-wrapper .s-blog-col-placeholder .s-blog-col-body.s-blog-no-posts{display:block;}.css-1uoapul .s-blog-wrapper .s-blog-col-placeholder .s-blog-col-body.left-align{text-align:left;}.css-1uoapul .s-blog-wrapper .s-blog-col-placeholder .s-blog-col-body.left-align .s-blog-posts .s-blog-entry{text-align:inherit;}.css-1uoapul .s-blog-wrapper .s-blog-col-placeholder .s-blog-col-body.left-align .s-blog-posts .s-blog-entry .s-blog-entry-right{text-align:inherit;}.css-1uoapul .s-blog-wrapper .s-blog-col-placeholder .s-blog-col-body.center-align{text-align:center;}.css-1uoapul .s-blog-wrapper .s-blog-col-placeholder .s-blog-col-body.center-align .s-blog-posts .s-blog-entry{text-align:inherit;}.css-1uoapul .s-blog-wrapper .s-blog-col-placeholder .s-blog-col-body.center-align .s-blog-posts .s-blog-entry .s-blog-entry-right{text-align:inherit;}.css-1uoapul .s-blog-wrapper .s-blog-col-placeholder .s-blog-col-body.right-align{text-align:right;}.css-1uoapul .s-blog-wrapper .s-blog-col-placeholder .s-blog-col-body.right-align .s-blog-posts .s-blog-entry{text-align:inherit;}.css-1uoapul .s-blog-wrapper .s-blog-col-placeholder .s-blog-col-body.right-align .s-blog-posts .s-blog-entry .s-blog-entry-right{text-align:inherit;}.s-blog-left .css-1uoapul .s-blog-wrapper .s-blog-col-placeholder .s-blog-col-body{margin:0;width:100%;}.css-1uoapul .s-blog-wrapper .s-blog-col-placeholder .s-blog-col-body .s-blog-posts .s-blog-entry{line-height:1.5;text-align:left;}.css-1uoapul .s-blog-wrapper .s-blog-col-placeholder .s-blog-col-body .s-blog-posts .s-blog-entry .s-blog-entry-inner{overflow:hidden;}.css-1uoapul .s-blog-wrapper .s-blog-col-placeholder .s-blog-col-body .s-blog-posts .s-blog-entry .s-blog-entry-inner .s-blog-entry-left{vertical-align:top;}.css-1uoapul .s-blog-wrapper .s-blog-col-placeholder .s-blog-col-body .s-blog-posts .s-blog-entry .s-blog-entry-inner .s-blog-entry-left .sample-tag{position:absolute;left:10px;top:10px;z-index:2;}.css-1uoapul .s-blog-wrapper .s-blog-col-placeholder .s-blog-col-body .s-blog-posts .s-blog-entry .s-blog-entry-inner .s-blog-entry-left .s-blog-avatar{-webkit-background-size:cover;background-size:cover;-webkit-background-position:center;background-position:center;background-repeat:no-repeat;}.css-1uoapul .s-blog-wrapper .s-blog-col-placeholder .s-blog-col-body .s-blog-posts .s-blog-entry .s-blog-entry-inner .s-blog-entry-left .s-blog-avatar.s-blog-whole-avatar{-webkit-background-size:contain;background-size:contain;}.css-1uoapul .s-blog-wrapper .s-blog-col-placeholder .s-blog-col-body .s-blog-posts .s-blog-entry .s-blog-entry-inner .s-blog-entry-left .s-blog-default-avatar{background:#ddd;text-align:center;font-size:40px;}.s-no-bg .css-1uoapul .s-blog-wrapper .s-blog-col-placeholder .s-blog-col-body .s-blog-posts .s-blog-entry .s-blog-entry-inner .s-blog-entry-left .s-blog-default-avatar{color:#aaa;}.css-1uoapul .s-blog-wrapper .s-blog-col-placeholder .s-blog-col-body .s-blog-posts .s-blog-entry .s-blog-entry-inner .s-blog-entry-left .s-blog-default-avatar .entypo-bookmark{position:relative;top:-4px;color:#aaa;}.css-1uoapul .s-blog-wrapper .s-blog-col-placeholder .s-blog-col-body .s-blog-posts .s-blog-entry .s-blog-entry-inner .s-blog-entry-right{vertical-align:middle;}.css-1uoapul .s-blog-wrapper .s-blog-col-placeholder .s-blog-col-body .s-blog-posts .s-blog-entry .s-blog-entry-inner .s-blog-entry-right .s-blog-details .s-blog-title{font-size:26px;margin-bottom:5px;line-height:1.2;}.css-1uoapul .s-blog-wrapper .s-blog-col-placeholder .s-blog-col-body .s-blog-posts .s-blog-entry .s-blog-entry-inner .s-blog-entry-right .s-blog-details .s-blog-title a{color:inherit;font-weight:inherit;vertical-align:middle;}@media only screen and (max-width:479px){.css-1uoapul .s-blog-wrapper .s-blog-col-placeholder .s-blog-col-body .s-blog-posts .s-blog-entry .s-blog-entry-inner .s-blog-entry-right .s-blog-details .s-blog-title{font-size:20px;}}.css-1uoapul .s-blog-wrapper .s-blog-col-placeholder .s-blog-col-body .s-blog-posts .s-blog-entry .s-blog-entry-inner .s-blog-entry-right .s-blog-details .s-blog-info{font-size:83%;}.s-bg-light-text .css-1uoapul .s-blog-wrapper .s-blog-col-placeholder .s-blog-col-body .s-blog-posts .s-blog-entry .s-blog-entry-inner .s-blog-entry-right .s-blog-details .s-blog-info{color:#fff;}.s-bg-dark-text .css-1uoapul .s-blog-wrapper .s-blog-col-placeholder .s-blog-col-body .s-blog-posts .s-blog-entry .s-blog-entry-inner .s-blog-entry-right .s-blog-details .s-blog-info{color:#000;}.css-1uoapul .s-blog-wrapper .s-blog-col-placeholder .s-blog-col-body .s-blog-posts .s-blog-entry .s-blog-entry-inner .s-blog-entry-right .s-blog-details .s-blog-details-blurb{margin-top:5px;word-break:break-word;}@media only screen and (max-width:500px){.css-1uoapul .s-blog-wrapper .s-blog-col-placeholder .s-blog-col-body .s-blog-posts .s-blog-entry .s-blog-entry-inner .s-blog-entry-right .s-blog-details .s-blog-details-blurb{display:none;}}.css-1uoapul .s-blog-wrapper .s-blog-col-placeholder .s-blog-col-body .s-blog-posts .s-blog-entry .s-blog-entry-inner .s-blog-entry-right .sample-tag{display:none;vertical-align:middle;margin-left:10px;}.css-1uoapul .s-blog-wrapper .s-blog-col-placeholder .s-blog-col-body .s-blog-posts .s-blog-entry.s-layout-row.s-avatar-none .s-blog-entry-inner{padding:15px 0;}.css-1uoapul .s-blog-wrapper .s-blog-col-placeholder .s-blog-col-body .s-blog-posts .s-blog-entry.s-layout-row.s-avatar-none .s-blog-entry-inner .s-blog-entry-left{display:none;}.css-1uoapul .s-blog-wrapper .s-blog-col-placeholder .s-blog-col-body .s-blog-posts .s-blog-entry.s-layout-row.s-avatar-none .s-blog-entry-inner .s-blog-entry-right .sample-tag{display:inline-block;}.css-1uoapul .s-blog-wrapper .s-blog-col-placeholder .s-blog-col-body .s-blog-posts .s-blog-entry.s-layout-row.s-avatar-circle .s-blog-entry-inner,.css-1uoapul .s-blog-wrapper .s-blog-col-placeholder .s-blog-col-body .s-blog-posts .s-blog-entry.s-layout-row.s-avatar-square .s-blog-entry-inner{padding:15px 0;}.css-1uoapul .s-blog-wrapper .s-blog-col-placeholder .s-blog-col-body .s-blog-posts .s-blog-entry.s-layout-row.s-avatar-circle .s-blog-entry-inner .s-blog-entry-left,.css-1uoapul .s-blog-wrapper .s-blog-col-placeholder .s-blog-col-body .s-blog-posts .s-blog-entry.s-layout-row.s-avatar-square .s-blog-entry-inner .s-blog-entry-left,.css-1uoapul .s-blog-wrapper .s-blog-col-placeholder .s-blog-col-body .s-blog-posts .s-blog-entry.s-layout-row.s-avatar-circle .s-blog-entry-inner .s-blog-entry-right,.css-1uoapul .s-blog-wrapper .s-blog-col-placeholder .s-blog-col-body .s-blog-posts .s-blog-entry.s-layout-row.s-avatar-square .s-blog-entry-inner .s-blog-entry-right{display:table-cell;}.css-1uoapul .s-blog-wrapper .s-blog-col-placeholder .s-blog-col-body .s-blog-posts .s-blog-entry.s-layout-row.s-avatar-circle .s-blog-entry-inner .s-blog-avatar,.css-1uoapul .s-blog-wrapper .s-blog-col-placeholder .s-blog-col-body .s-blog-posts .s-blog-entry.s-layout-row.s-avatar-square .s-blog-entry-inner .s-blog-avatar{width:80px;height:80px;margin-right:20px;overflow:hidden;}@media only screen and (max-width:479px){.css-1uoapul .s-blog-wrapper .s-blog-col-placeholder .s-blog-col-body .s-blog-posts .s-blog-entry.s-layout-row.s-avatar-circle .s-blog-entry-inner .s-blog-avatar,.css-1uoapul .s-blog-wrapper .s-blog-col-placeholder .s-blog-col-body .s-blog-posts .s-blog-entry.s-layout-row.s-avatar-square .s-blog-entry-inner .s-blog-avatar{width:65px;height:65px;}}.css-1uoapul .s-blog-wrapper .s-blog-col-placeholder .s-blog-col-body .s-blog-posts .s-blog-entry.s-layout-row.s-avatar-circle .s-blog-entry-inner .s-blog-avatar video,.css-1uoapul .s-blog-wrapper .s-blog-col-placeholder .s-blog-col-body .s-blog-posts .s-blog-entry.s-layout-row.s-avatar-square .s-blog-entry-inner .s-blog-avatar video{position:relative;top:-15px;left:-80px;width:228px;}.css-1uoapul .s-blog-wrapper .s-blog-col-placeholder .s-blog-col-body .s-blog-posts .s-blog-entry.s-layout-row.s-avatar-circle .s-blog-avatar{border-radius:50%;}.css-1uoapul .s-blog-wrapper .s-blog-col-placeholder .s-blog-col-body .s-blog-posts .s-blog-entry.s-layout-row.s-avatar-square .s-blog-avatar{border-radius:3px;}.css-1uoapul .s-blog-wrapper .s-blog-col-placeholder .s-blog-col-body .s-blog-posts .s-blog-entry.s-layout-columns{margin-right:2%;display:inline-block;vertical-align:top;}.css-1uoapul .s-blog-wrapper .s-blog-col-placeholder .s-blog-col-body .s-blog-posts .s-blog-entry.s-layout-columns.one{width:98%;}.css-1uoapul .s-blog-wrapper .s-blog-col-placeholder .s-blog-col-body .s-blog-posts .s-blog-entry.s-layout-columns.two{width:48%;}.css-1uoapul .s-blog-wrapper .s-blog-col-placeholder .s-blog-col-body .s-blog-posts .s-blog-entry.s-layout-columns.three{width:31.33%;}.css-1uoapul .s-blog-wrapper .s-blog-col-placeholder .s-blog-col-body .s-blog-posts .s-blog-entry.s-layout-columns.four{width:23%;}.css-1uoapul .s-blog-wrapper .s-blog-col-placeholder .s-blog-col-body .s-blog-posts .tiled-columns{display:inline-block;}@media only screen and (max-width:727px){.css-1uoapul .s-blog-wrapper .s-blog-col-placeholder .s-blog-col-body .s-blog-posts .tiled-columns.s-blog-entry.s-layout-columns{width:48%;}}.css-1uoapul .s-blog-wrapper .s-blog-col-placeholder .s-blog-col-body .s-blog-posts .tiled-columns .s-blog-entry.s-layout-columns{width:100%;}.css-1uoapul .s-blog-wrapper .s-blog-col-placeholder .s-blog-col-body .s-blog-posts .tiled-columns .s-blog-entry-right{text-align:center;}.css-1uoapul .s-blog-wrapper .s-blog-col-placeholder .s-blog-col-body .s-blog-read-more-link{-webkit-text-decoration:underline;text-decoration:underline;color:inherit;}.css-1uoapul .s-blog-wrapper .s-blog-col-placeholder .s-blog-col-foot{margin-top:28px;padding-bottom:20px;text-align:inherit;}.s-blog-left .css-1uoapul .s-blog-wrapper .s-blog-col-placeholder .s-blog-col-foot{text-align:left;}.css-1uoapul .s-blog-wrapper .s-blog-col-placeholder .s-blog-col-foot.flex-start{display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-box-pack:start;-ms-flex-pack:start;-webkit-justify-content:flex-start;justify-content:flex-start;}.css-1uoapul .s-blog-wrapper .s-blog-col-placeholder .s-blog-col-foot.center{display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-box-pack:center;-ms-flex-pack:center;-webkit-justify-content:center;justify-content:center;}.css-1uoapul .s-blog-wrapper .s-blog-col-placeholder .s-blog-col-foot.flex-end{display:-webkit-box;display:-webkit-flex;display:-ms-flexbox;display:flex;-webkit-box-pack:end;-ms-flex-pack:end;-webkit-justify-content:flex-end;justify-content:flex-end;}.css-1uoapul .s-blog-wrapper .s-blog-col-placeholder .s-blog-col-foot .s-more-blog-posts-button{padding:8px 16px;font-size:100%;}.css-1uoapul .s-blog-wrapper .s-blog-col-placeholder .s-loading{position:absolute;top:50%;left:50%;padding:16px;margin:-32px 0 0 -19px;border-radius:99px;border:3px solid white;}.css-1uoapul .s-blog-wrapper .s-blog-col-placeholder .no-posts-error{margin:30px auto;}</style><div class="css-1uoapul css-2vmxba0"><div class="lazyload  s-no-bg  new-text-color-logic s-blog-section s-section   s-new-mobile-layout background-image" data-react-style="{}"><div class="waypoint"></div><div class="container"><div class="columns no-float sixteen"><div class="s-title-group"><div class="s-title"><div class="s-component s-text"><div class=""><div class="s-component-content s-font-title" style="white-space:pre-wrap"><h2><div class="s-rich-text-wrapper" style="display: block;"><p class=" s-rich-text-wrapper">博客</p></div></h2></div></div></div></div><div class="s-subtitle"><div class="s-component s-text"><div class=""></div></div></div></div></div><div class=""><div><div class="s-component s-blog columns sixteen"><div class="s-blog-wrapper"><div class="s-blog-col-placeholder clearfix"><div class="s-blog-col-body s-blog-no-posts left-align"><div class="s-blog-posts s-blog-posts-columns clearfix"><div class="s-blog-entry s-blog-new-layout s-blog-new-layout-grid three  s-layout-columns s-avatar-landscape s-snippet-short s-avatar-square s-avatar-alignment-left s-avatar-m"><div class="s-blog-entry-inner"><div class="s-blog-entry-left s-blog-avatar-container"><a target="_self" href="https://crashstudio.mysxl.cn/blog/8eb5ad448b8" aria-label="最新博客"><div class="s-blog-avatar" style="background-image:url(//user-assets.sxlcdn.com/static/backgrounds/blur/6.jpg)"></div></a></div><div class="s-blog-entry-right"><div class="s-blog-details"><div class="s-blog-details-head"><div class="s-item-title s-blog-title s-font-heading"><a target="_self" href="https://crashstudio.mysxl.cn/blog/8eb5ad448b8">最新博客</a></div><div class="s-blog-info  s-font-body"><span class="s-blog-date">2025年3月22日</span></div></div><div class="s-blog-details-blurb  s-font-body s-blog-row">下一期出DeepSp本地部署   </div></div></div></div></div><div class="s-blog-entry s-blog-new-layout s-blog-new-layout-grid three  s-layout-columns s-avatar-landscape s-snippet-short s-avatar-square s-avatar-alignment-left s-avatar-m"><div class="s-blog-entry-inner"><div class="s-blog-entry-left s-blog-avatar-container"><a target="_self" href="https://crashstudio.mysxl.cn/blog/2fe10f71159" aria-label="官方博客"><div class="s-blog-avatar" style="background-image:url(//user-assets.sxlcdn.com/static/backgrounds/blur/5.jpg)"></div></a></div><div class="s-blog-entry-right"><div class="s-blog-details"><div class="s-blog-details-head"><div class="s-item-title s-blog-title s-font-heading"><a target="_self" href="https://crashstudio.mysxl.cn/blog/2fe10f71159">官方博客</a></div><div class="s-blog-info  s-font-body"><span class="s-blog-date">2025年3月20日</span></div></div><div class="s-blog-details-blurb  s-font-body s-blog-row">你们好呀，我是新创立死机工作室的一位老板，今天声明一下，这个是官网，别走错了</div></div></div></div></div><div class="s-blog-entry s-blog-new-layout s-blog-new-layout-grid three  s-layout-columns s-avatar-landscape s-snippet-short s-avatar-square s-avatar-alignment-left s-avatar-m"><div class="s-blog-entry-inner"><div class="s-blog-entry-left s-blog-avatar-container"><a target="_self" href="https://crashstudio.mysxl.cn/blog/qq-1033587051" aria-label="我的QQ反馈群：1033587051"><div class="s-blog-avatar" style="background-image:url(//user-assets.sxlcdn.com/static/backgrounds/blur/5.jpg)"></div></a></div><div class="s-blog-entry-right"><div class="s-blog-details"><div class="s-blog-details-head"><div class="s-item-title s-blog-title s-font-heading"><a target="_self" href="https://crashstudio.mysxl.cn/blog/qq-1033587051">我的QQ反馈群：1033587051</a></div><div class="s-blog-info  s-font-body"><span class="s-blog-date">2025年3月19日</span></div></div><div class="s-blog-details-blurb  s-font-body s-blog-row">最新的博客会马上出来</div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></li><li class="slide s-section-5 css-mpqikg s-s6-wrapper css-g6n6xt" id="section-f_62275f94-826e-423b-8d91-aa12a351fcd7"><div class="waypoint"></div><div class="section-anchor"></div><div><div class="lazyload  s-section s6-section   s-no-bg  new-text-color-logic  s-block-section background-image" data-react-style="{}"><div class="container"><div><div id="f_adb9cbcd-b3df-4182-bfed-9b2a708c6d93" class="s-row" position="4,0"><div class="s-row-content "><div id="f_67bfa15d-6e1b-433d-bb23-358732e79bd6" position="4,0,0" class="s-col col-12"><div class="col-list col-align-null"><div id="f_d9bd711e-4454-4289-9031-2ce133b8f76c" class="s-element-blockcomponentitem" position="4,0,0,0"><div id="f_d9bd711e-4454-4289-9031-2ce133b8f76c" position="4,0,0,0" class="s-element" columnsSize="1" elementsSize="1"><div class="s-element-content"><div class="s-component s-block s-block-title s-block-blockcomponentitem "> <div><div><div class="s-block-item-inner clearfix" style="position:relative"><div class=""><div class="s-item-title"><div class="s-component s-text"><div class=""><div class="s-component-content s-font-heading" style="white-space:pre-wrap"><h3><div class="s-rich-text-wrapper" style="display: block;"><p class=" s-rich-text-wrapper"><span style="color: #1d2023;">python学习课件获取链接</span><br></p></div></h3></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div><div id="363b2419-1749-43a2-a235-7636db17e686" class="s-row" position="4,1"><div class="s-row-content "><div id="d53b91de-16ff-44ee-88ea-24bbb1ac9ebf" position="4,1,0" class="s-col col-12"><div class="col-list col-align-undefined"><div id="7b24b151-3d4a-4e93-8b33-d4ba550e15a2" class="s-element-blockcomponentitem" position="4,1,0,0"><div id="7b24b151-3d4a-4e93-8b33-d4ba550e15a2" position="4,1,0,0" class="s-element" columnsSize="1" elementsSize="1"><div class="s-element-content"><div class="s-component s-block s-block-context s-block-blockcomponentitem "> <div><div><div class="s-block-item-inner clearfix" style="position:relative"><div class=""><div class="s-item-text"><div class="s-component s-text"><div class=""><div class="s-component-content s-font-body" style="white-space:pre-wrap"><div class="s-rich-text-wrapper" style="display: block;"><p class=" s-rich-text-wrapper"><span style="color: #0e0b0b;">蓝奏云：</span><span style="color: #3f3f3f;">https://wwui.lanzouu.com/iH7hj2raf69a密码:9rbc（只有第一课）</span></p><p><span style="color: #000000;">阿里云盘:https://www.alipan.com/s/MyvCEnXHnF3</span><span style="color: #3f3f3f;">（只有第一课）</span></p><p>更多网盘链接请加入QQ交流群:<span style="color: #041e2a;">1033587051</span></p></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div></div><div class="waypoint"></div></li></ul><div id="prerendered-inline-theme-html"></div></div><div id="strikingly-tooltip-container"></div><div id="s-footer-section-container" class=""><div class="lazyload  s-no-bg s-bg-white new-text-color-logic s-footer-section s-section show-strikingly-logo new-text-color-logic css-1xpj73n css-vtybll css-1fvzbvi new-footer-hyperlink-style   background-image" data-react-style="{}"><div class="container s-layout-vertical"><div class="columns sixteen "><div><div class="waypoint"></div></div><div class="s-footer-text"><div class="s-component s-text"><div class=""><div class="s-component-content s-font-body" style="white-space:pre-wrap"><div class="s-rich-text-wrapper" style="display: block;"><p class=" s-rich-text-wrapper">©2020-2025 <span style="color: #333333;">死机工作室版权所有-死机工作室</span>®</p></div></div></div></div></div></div></div></div></div><div class="s-footer-logo-wrapper" style="position:static;width:100%"></div><div id="ecommerce-drawer" class="s-category-drawer-wrapper"></div><div id="blog-category-drawer" class="s-category-drawer-wrapper"></div><div class="s-floated-components"><div></div><div><div id="s-ecommerce-shopping-cart-wrapper" class="s-ecommerce-shopping-cart-wrapper no-cart"></div><div id="fixedContainer"><div id="fixedLoginContainer" class="fixed-login-container"></div><div id="fixedMultiLangSwitcher" class="fixed-multi-lang-container"></div></div></div><div id="s-new-mobile-actions-wrapper" class=""><ul class="s-mobile-actions clearfix s-font-body"></ul></div></div><div class="social-thumbnail"><div id="lw-share-data" style="display:none"><div class="lws-title">死机工作室</div><div class="lws-description">Website</div><div class="lws-image">https://user-assets.sxlcdn.com/images/1228338/FiM4SjmeLMsAjnwW7wVQOfzmxbZd.png?imageMogr2/strip/auto-orient/thumbnail/1200x630&gt;/quality/90!/format/png</div></div></div></div></div><script class="script-loader">(function(){var initScrollData = function(){window.cachedScrollData=null,window.ssrScrollListener=function(){window.cachedScrollData={top:window.scrollY,left:0}},window.addEventListener("scroll",window.ssrScrollListener)}; initScrollData();})()</script></div></div></div></div>
+</div>
+<div id='fb-root'></div>
+<div id='app-script-root'></div>
+<div id='app-view-root'></div>
+<div class='s-cookie-notification-bar' style='position: fixed; bottom: -1000px !important;'>
+<div class='cookie-notification-title'>Cookie的使用</div>
+<span class='cookie-notification-text'>我们使用cookies来确保流畅的浏览体验。若继续，我们认为你接受使用cookies。</span>
+<div>
+<button>确认</button>
+</div>
+<a href='/pages/cookie-policy' target='_blank'>了解更多</a>
+</div>
+<script src="//ajax.sxlcdn.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+<!-- *! lazysizes - v5.3.2 */ -->
+<script>
+!function(e){var t=function(u,D,f){"use strict";var k,H;if(function(){var e;var t={lazyClass:"lazyload",loadedClass:"lazyloaded",loadingClass:"lazyloading",preloadClass:"lazypreload",errorClass:"lazyerror",autosizesClass:"lazyautosizes",fastLoadedClass:"ls-is-cached",iframeLoadMode:0,srcAttr:"data-src",srcsetAttr:"data-srcset",sizesAttr:"data-sizes",minSize:40,customMedia:{},init:true,expFactor:1.5,hFac:.8,loadMode:2,loadHidden:true,ricTimeout:0,throttleDelay:125};H=u.lazySizesConfig||u.lazysizesConfig||{};for(e in t){if(!(e in H)){H[e]=t[e]}}}(),!D||!D.getElementsByClassName){return{init:function(){},cfg:H,noSupport:true}}var O=D.documentElement,i=u.HTMLPictureElement,P="addEventListener",$="getAttribute",q=u[P].bind(u),I=u.setTimeout,U=u.requestAnimationFrame||I,o=u.requestIdleCallback,j=/^picture$/i,r=["load","error","lazyincluded","_lazyloaded"],a={},G=Array.prototype.forEach,J=function(e,t){if(!a[t]){a[t]=new RegExp("(\\s|^)"+t+"(\\s|$)")}return a[t].test(e[$]("class")||"")&&a[t]},K=function(e,t){if(!J(e,t)){e.setAttribute("class",(e[$]("class")||"").trim()+" "+t)}},Q=function(e,t){var a;if(a=J(e,t)){e.setAttribute("class",(e[$]("class")||"").replace(a," "))}},V=function(t,a,e){var i=e?P:"removeEventListener";if(e){V(t,a)}r.forEach(function(e){t[i](e,a)})},X=function(e,t,a,i,r){var n=D.createEvent("Event");if(!a){a={}}a.instance=k;n.initEvent(t,!i,!r);n.detail=a;e.dispatchEvent(n);return n},Y=function(e,t){var a;if(!i&&(a=u.picturefill||H.pf)){if(t&&t.src&&!e[$]("srcset")){e.setAttribute("srcset",t.src)}a({reevaluate:true,elements:[e]})}else if(t&&t.src){e.src=t.src}},Z=function(e,t){return(getComputedStyle(e,null)||{})[t]},s=function(e,t,a){a=a||e.offsetWidth;while(a<H.minSize&&t&&!e._lazysizesWidth){a=t.offsetWidth;t=t.parentNode}return a},ee=function(){var a,i;var t=[];var r=[];var n=t;var s=function(){var e=n;n=t.length?r:t;a=true;i=false;while(e.length){e.shift()()}a=false};var e=function(e,t){if(a&&!t){e.apply(this,arguments)}else{n.push(e);if(!i){i=true;(D.hidden?I:U)(s)}}};e._lsFlush=s;return e}(),te=function(a,e){return e?function(){ee(a)}:function(){var e=this;var t=arguments;ee(function(){a.apply(e,t)})}},ae=function(e){var a;var i=0;var r=H.throttleDelay;var n=H.ricTimeout;var t=function(){a=false;i=f.now();e()};var s=o&&n>49?function(){o(t,{timeout:n});if(n!==H.ricTimeout){n=H.ricTimeout}}:te(function(){I(t)},true);return function(e){var t;if(e=e===true){n=33}if(a){return}a=true;t=r-(f.now()-i);if(t<0){t=0}if(e||t<9){s()}else{I(s,t)}}},ie=function(e){var t,a;var i=99;var r=function(){t=null;e()};var n=function(){var e=f.now()-a;if(e<i){I(n,i-e)}else{(o||r)(r)}};return function(){a=f.now();if(!t){t=I(n,i)}}},e=function(){var v,m,c,h,e;var y,z,g,p,C,b,A;var n=/^img$/i;var d=/^iframe$/i;var E="onscroll"in u&&!/(gle|ing)bot/.test(navigator.userAgent);var _=0;var w=0;var M=0;var N=-1;var L=function(e){M--;if(!e||M<0||!e.target){M=0}};var x=function(e){if(A==null){A=Z(D.body,"visibility")=="hidden"}return A||!(Z(e.parentNode,"visibility")=="hidden"&&Z(e,"visibility")=="hidden")};var W=function(e,t){var a;var i=e;var r=x(e);g-=t;b+=t;p-=t;C+=t;while(r&&(i=i.offsetParent)&&i!=D.body&&i!=O){r=(Z(i,"opacity")||1)>0;if(r&&Z(i,"overflow")!="visible"){a=i.getBoundingClientRect();r=C>a.left&&p<a.right&&b>a.top-1&&g<a.bottom+1}}return r};var t=function(){var e,t,a,i,r,n,s,o,l,u,f,c;var d=k.elements;if((h=H.loadMode)&&M<8&&(e=d.length)){t=0;N++;for(;t<e;t++){if(!d[t]||d[t]._lazyRace){continue}if(!E||k.prematureUnveil&&k.prematureUnveil(d[t])){R(d[t]);continue}if(!(o=d[t][$]("data-expand"))||!(n=o*1)){n=w}if(!u){u=!H.expand||H.expand<1?O.clientHeight>500&&O.clientWidth>500?500:370:H.expand;k._defEx=u;f=u*H.expFactor;c=H.hFac;A=null;if(w<f&&M<1&&N>2&&h>2&&!D.hidden){w=f;N=0}else if(h>1&&N>1&&M<6){w=u}else{w=_}}if(l!==n){y=innerWidth+n*c;z=innerHeight+n;s=n*-1;l=n}a=d[t].getBoundingClientRect();if((b=a.bottom)>=s&&(g=a.top)<=z&&(C=a.right)>=s*c&&(p=a.left)<=y&&(b||C||p||g)&&(H.loadHidden||x(d[t]))&&(m&&M<3&&!o&&(h<3||N<4)||W(d[t],n))){R(d[t]);r=true;if(M>9){break}}else if(!r&&m&&!i&&M<4&&N<4&&h>2&&(v[0]||H.preloadAfterLoad)&&(v[0]||!o&&(b||C||p||g||d[t][$](H.sizesAttr)!="auto"))){i=v[0]||d[t]}}if(i&&!r){R(i)}}};var a=ae(t);var S=function(e){var t=e.target;if(t._lazyCache){delete t._lazyCache;return}L(e);K(t,H.loadedClass);Q(t,H.loadingClass);V(t,B);X(t,"lazyloaded")};var i=te(S);var B=function(e){i({target:e.target})};var T=function(e,t){var a=e.getAttribute("data-load-mode")||H.iframeLoadMode;if(a==0){e.contentWindow.location.replace(t)}else if(a==1){e.src=t}};var F=function(e){var t;var a=e[$](H.srcsetAttr);if(t=H.customMedia[e[$]("data-media")||e[$]("media")]){e.setAttribute("media",t)}if(a){e.setAttribute("srcset",a)}};var s=te(function(t,e,a,i,r){var n,s,o,l,u,f;if(!(u=X(t,"lazybeforeunveil",e)).defaultPrevented){if(i){if(a){K(t,H.autosizesClass)}else{t.setAttribute("sizes",i)}}s=t[$](H.srcsetAttr);n=t[$](H.srcAttr);if(r){o=t.parentNode;l=o&&j.test(o.nodeName||"")}f=e.firesLoad||"src"in t&&(s||n||l);u={target:t};K(t,H.loadingClass);if(f){clearTimeout(c);c=I(L,2500);V(t,B,true)}if(l){G.call(o.getElementsByTagName("source"),F)}if(s){t.setAttribute("srcset",s)}else if(n&&!l){if(d.test(t.nodeName)){T(t,n)}else{t.src=n}}if(r&&(s||l)){Y(t,{src:n})}}if(t._lazyRace){delete t._lazyRace}Q(t,H.lazyClass);ee(function(){var e=t.complete&&t.naturalWidth>1;if(!f||e){if(e){K(t,H.fastLoadedClass)}S(u);t._lazyCache=true;I(function(){if("_lazyCache"in t){delete t._lazyCache}},9)}if(t.loading=="lazy"){M--}},true)});var R=function(e){if(e._lazyRace){return}var t;var a=n.test(e.nodeName);var i=a&&(e[$](H.sizesAttr)||e[$]("sizes"));var r=i=="auto";if((r||!m)&&a&&(e[$]("src")||e.srcset)&&!e.complete&&!J(e,H.errorClass)&&J(e,H.lazyClass)){return}t=X(e,"lazyunveilread").detail;if(r){re.updateElem(e,true,e.offsetWidth)}e._lazyRace=true;M++;s(e,t,r,i,a)};var r=ie(function(){H.loadMode=3;a()});var o=function(){if(H.loadMode==3){H.loadMode=2}r()};var l=function(){if(m){return}if(f.now()-e<999){I(l,999);return}m=true;H.loadMode=3;a();q("scroll",o,true)};return{_:function(){e=f.now();k.elements=D.getElementsByClassName(H.lazyClass);v=D.getElementsByClassName(H.lazyClass+" "+H.preloadClass);q("scroll",a,true);q("resize",a,true);q("pageshow",function(e){if(e.persisted){var t=D.querySelectorAll("."+H.loadingClass);if(t.length&&t.forEach){U(function(){t.forEach(function(e){if(e.complete){R(e)}})})}}});if(u.MutationObserver){new MutationObserver(a).observe(O,{childList:true,subtree:true,attributes:true})}else{O[P]("DOMNodeInserted",a,true);O[P]("DOMAttrModified",a,true);setInterval(a,999)}q("hashchange",a,true);["focus","mouseover","click","load","transitionend","animationend"].forEach(function(e){D[P](e,a,true)});if(/d$|^c/.test(D.readyState)){l()}else{q("load",l);D[P]("DOMContentLoaded",a);I(l,2e4)}if(k.elements.length){t();ee._lsFlush()}else{a()}},checkElems:a,unveil:R,_aLSL:o}}(),re=function(){var a;var n=te(function(e,t,a,i){var r,n,s;e._lazysizesWidth=i;i+="px";e.setAttribute("sizes",i);if(j.test(t.nodeName||"")){r=t.getElementsByTagName("source");for(n=0,s=r.length;n<s;n++){r[n].setAttribute("sizes",i)}}if(!a.detail.dataAttr){Y(e,a.detail)}});var i=function(e,t,a){var i;var r=e.parentNode;if(r){a=s(e,r,a);i=X(e,"lazybeforesizes",{width:a,dataAttr:!!t});if(!i.defaultPrevented){a=i.detail.width;if(a&&a!==e._lazysizesWidth){n(e,r,i,a)}}}};var e=function(){var e;var t=a.length;if(t){e=0;for(;e<t;e++){i(a[e])}}};var t=ie(e);return{_:function(){a=D.getElementsByClassName(H.autosizesClass);q("resize",t)},checkElems:t,updateElem:i}}(),t=function(){if(!t.i&&D.getElementsByClassName){t.i=true;re._();e._()}};return I(function(){H.init&&t()}),k={cfg:H,autoSizer:re,loader:e,init:t,uP:Y,aC:K,rC:Q,hC:J,fire:X,gW:s,rAF:ee}}(e,e.document,Date);e.lazySizes=t,"object"==typeof module&&module.exports&&(module.exports=t)}("undefined"!=typeof window?window:{});
+</script>
+
+<script>
+document.addEventListener('lazybeforeunveil', function(e){var bg = e.target.getAttribute('data-bg');if(bg){ e.target.style.backgroundImage = 'url(' + bg + ')';var blurredBg = e.target.getElementsByClassName('blurred-layer')[0];if (blurredBg) {blurredBg.className += ' loaded'}}});
+</script>
+<script>
+var _gaq = _gaq || [];
+if (typeof getCookieItem === 'function' && (getCookieItem('__strk_cookie_eu_visitor') != 'true' || getCookieItem('__is_open_strk_analytics_cookie'))) {
+   // Google Analytics (Universal) Setup
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+  (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+  m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','//www.google-analytics.com/analytics.js','__ga');
+}
+</script>
+
+<div id='s-support-widget-container'></div>
+<!-- CUSTOM_CODE_START -->
+<!-- CUSTOM_CODE_END -->
+
+<script src="https://static-assets.sxlcdn.com/i18n-2ace11ac644d0b40fb8b7cb65e9dd1e553022750e0254118dacbe1fe50735e97.js" defer="defer"></script>
+<script>
+  window.pingpp = {}
+</script>
+<script src="https://static-assets.sxlcdn.com/webpack/page-site-bundle.9b82f8b58ebada969e36.js" defer="defer"></script>
+<script>
+  window.addEventListener('DOMContentLoaded', function() {
+    if (window._) {
+      window._.VERSION = '4.17.21';
+    }
+  })
+  window.addEventListener('load', function() {
+    if (window.afterBundleLoadTrack) {
+      afterBundleLoadTrack()
+    }
+  })
+</script>
+</body>
+</html>
+<!-- Powered by Sxl.cn 4 (1) Mar 31, 2025 at 06:25-->
